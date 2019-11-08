@@ -6,6 +6,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification as IlluminateNotification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use NotificationChannels\Webhook\WebhookMessage;
 
 class Notification extends IlluminateNotification
@@ -40,9 +41,10 @@ class Notification extends IlluminateNotification
     public function toMail(): MailMessage
     {
         return (new MailMessage)->error()
-            ->subject($this->stuckFailedJobsCount . ' failed jobs are stuck at ' . config('app.url'))
-            ->line($this->stuckFailedJobsCount . ' failed jobs are stuck for '
-                . config('failed-jobs-notifier.daysLimit') . 'days at ' . config('app.url') . '.')
+            ->subject($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
+                . ' are stuck at ' . config('app.url'))
+            ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
+                . ' are stuck for ' . config('failed-jobs-notifier.daysLimit') . ' days at ' . config('app.url') . '.')
             ->line('Please check your failed jobs on your project server with the '
                 . '« php artisan queue:failed » command.');
     }
