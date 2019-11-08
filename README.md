@@ -63,8 +63,6 @@ $schedule->command('queue:failed:notify')->dailyAt('12:00');
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
 
-## API
-
 ## Testing
 
 ``` bash
