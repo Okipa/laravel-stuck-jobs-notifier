@@ -41,10 +41,11 @@ class Notification extends IlluminateNotification
     public function toMail(): MailMessage
     {
         return (new MailMessage)->error()
-            ->subject($this->stuckFailedJobsCount . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount)
-                . ' at ' . config('app.url'))
+            ->subject('[' . config('app.name') . '] ⚠ ' . $this->stuckFailedJobsCount . ' stuck failed '
+                . Str::plural('job', $this->stuckFailedJobsCount) . ' detected')
             ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
-                . ', stuck for at least ' . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.')
+                . ', stuck for at least ' . config('failed-jobs-notifier.daysLimit') . ' days, detected at '
+                . config('app.url') . '.')
             ->line('Please check your failed jobs using the « php artisan queue:failed » command.');
     }
 
@@ -57,12 +58,13 @@ class Notification extends IlluminateNotification
     {
         return (new SlackMessage)
             ->error()
-            ->content($this->stuckFailedJobsCount . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount)
-                . ' at ' . config('app.url') . '.');
+            ->content('⚠ `' . config('app.name') . '`' . $this->stuckFailedJobsCount . ' failed '
+                . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '
+                . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.');
     }
 
     /**
-     * Get the webhook representation of the notification.
+     * Get the webhook representation of the notification.q
      *
      * @return \NotificationChannels\Webhook\WebhookMessage
      */
@@ -70,19 +72,9 @@ class Notification extends IlluminateNotification
     {
         // this is a rocket chat example
         return WebhookMessage::create()->data([
-            'payload' => [
-                'text'        => $this->stuckFailedJobsCount . ' stuck failed '
-                    . Str::plural('job', $this->stuckFailedJobsCount) . ' at ' . config('app.url') . '.',
-                'attachments' => [
-                    'title'      => 'Rocket.Chat',
-                    'title_link' => 'https://rocket.chat',
-                    'text'       => 'Rocket.Chat, the best open source chat',
-                    'image_url'  => '/images/integration-attachment-example.png',
-                    'color'      => '#764FA5',
-                ],
-            ],
-        ])
-            // ->userAgent("Custom-User-Agent")
-            ->header('Content-Type', 'application/json');
+            'text' => '⚠ `' . config('app.name') . '` ' . $this->stuckFailedJobsCount . ' failed '
+                . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '
+                . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.',
+        ])->header('Content-Type', 'application/json');
     }
 }
