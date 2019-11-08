@@ -41,7 +41,7 @@ composer require "okipa/laravel-failed-jobs-notifier:^1.0"
 If you don't use auto-discovery or if you use a Laravel 5.4- version, add the package service provider in the `register()` method from your `app/Providers/AppServiceProvider.php` :
 ```php
 // laravel bootstrap components
-// https://github.com/Okipa/laravel-bootstrap-components
+// https://github.com/Okipa/laravel-failed-jobs-notifier
 $this->app->register(\Okipa\LaravelFailedJobsNotifier\FailedJobsReporterServiceProvider::class);
 ```
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Okipa\Failed\Test\Dummy;
+namespace Okipa\LaravelFailedJobsNotifier\Test\Dummy;
 
 use Illuminate\Notifications\Notifiable as NotifiableTrait;
 

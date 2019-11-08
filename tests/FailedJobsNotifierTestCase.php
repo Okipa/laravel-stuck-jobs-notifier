@@ -1,6 +1,6 @@
 <?php
 
-namespace Okipa\LaravelBootstrapComponents\Test;
+namespace Okipa\LaravelFailedJobsNotifier\Test;
 
 use Faker\Factory;
 use Okipa\LaravelFailedJobsNotifier\FailedJobsReporterServiceProvider;

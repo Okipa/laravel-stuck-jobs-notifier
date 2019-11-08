@@ -1,15 +1,15 @@
 <?php
 
-namespace Okipa\LaravelBootstrapComponents\Test\Unit;
+namespace Okipa\LaravelFailedJobsNotifier\Test\Unit;
 
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Schema;
-use Okipa\Failed\Test\Dummy\AnotherNotifiable;
-use Okipa\Failed\Test\Dummy\AnotherNotification;
-use Okipa\Failed\Test\Dummy\WrongNotification;
-use Okipa\LaravelBootstrapComponents\Test\BootstrapComponentsTestCase;
+use Okipa\LaravelFailedJobsNotifier\Test\Dummy\AnotherNotifiable;
+use Okipa\LaravelFailedJobsNotifier\Test\Dummy\AnotherNotification;
+use Okipa\LaravelFailedJobsNotifier\Test\Dummy\WrongNotification;
+use Okipa\LaravelFailedJobsNotifier\Test\BootstrapComponentsTestCase;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification;
