@@ -41,8 +41,8 @@ class Notification extends IlluminateNotification
     public function toMail(): MailMessage
     {
         return (new MailMessage)->error()
-            ->subject($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
-                . ' are stuck at ' . config('app.url'))
+            ->subject($this->stuckFailedJobsCount . 'stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount)
+                . ' at ' . config('app.url'))
             ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
                 . ' are stuck for ' . config('failed-jobs-notifier.daysLimit') . ' days at ' . config('app.url') . '.')
             ->line('Please check your failed jobs on your project server with the '
@@ -58,7 +58,8 @@ class Notification extends IlluminateNotification
     {
         return (new SlackMessage)
             ->error()
-            ->content($this->stuckFailedJobsCount . ' failed jobs are stuck at ' . config('app.url') . '.');
+            ->content($this->stuckFailedJobsCount . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount)
+                . ' at ' . config('app.url') . '.');
     }
 
     /**
@@ -71,7 +72,8 @@ class Notification extends IlluminateNotification
         // this is a rocket chat example
         return WebhookMessage::create()->data([
             'payload' => [
-                'text'        => $this->stuckFailedJobsCount . ' failed jobs are stuck at ' . config('app.url') . '.',
+                'text'        => $this->stuckFailedJobsCount . ' stuck failed '
+                    . Str::plural('job', $this->stuckFailedJobsCount) . ' at ' . config('app.url') . '.',
                 'attachments' => [
                     'title'      => 'Rocket.Chat',
                     'title_link' => 'https://rocket.chat',
