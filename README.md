@@ -21,7 +21,6 @@ Notifications can be sent by mail, Slack and webhooks (chats often have webhook 
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [API](#api)
 - [Testing](#testing)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
