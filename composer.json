@@ -44,7 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Okipa\\LaravelRequestSanitizer\\Test\\": "tests/"
+            "Okipa\\LaravelFailedJobsNotifier\\Test\\": "tests/"
         }
     },
     "scripts": {
@@ -56,13 +56,10 @@
             "vendor/bin/phpunit"
         ]
     },
-    "suggest": {
-        "guzzlehttp/guzzle": "Allows notifications to be sent via Slack"
-    },
     "extra": {
         "laravel": {
             "providers": [
-                "Okipa\\LaravelFailedJobsNotifier\\FailedJobsNotifierServiceProvider"
+                "Okipa\\LaravelFailedJobsNotifier\\FailedJobsReporterServiceProvider"
             ]
         }
     },
