@@ -70,7 +70,7 @@ class Notification extends IlluminateNotification
      */
     public function toWebhook(): WebhookMessage
     {
-        // this is a rocket chat example
+        // rocket chat webhook example
         return WebhookMessage::create()->data([
             'text' => '⚠ `' . config('app.name') . '` ' . $this->stuckFailedJobsCount . ' failed '
                 . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '

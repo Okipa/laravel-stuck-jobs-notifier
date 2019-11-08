@@ -46,7 +46,7 @@ return [
     ],
 
     'webhook' => [
-        // this is a rocket chat example
+        // rocket chat webhook example
         'url' => 'https://rocket.chat/hooks/1234/5678',
     ],
 
