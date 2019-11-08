@@ -1,6 +1,6 @@
 {
     "name": "okipa/laravel-failed-jobs-notifier",
-    "description": "Get notified when failed jobs are stuck for a certain amount of time.",
+    "description": "Get notified when failed jobs are stuck for a defined number of days.",
     "keywords": [
         "okipa",
         "package",

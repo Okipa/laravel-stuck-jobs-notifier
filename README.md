@@ -1,4 +1,4 @@
-# Get notified when failed jobs are stuck for a certain amount of time.
+# Get notified when failed jobs are stuck for a defined number of days.
 
 [![Source Code](https://img.shields.io/badge/source-okipa/laravel--failed--jobs--notifier-blue.svg)](https://github.com/Okipa/laravel-failed-jobs-notifier)
 [![Latest Version](https://img.shields.io/github/release/okipa/laravel-failed-jobs-notifier.svg?style=flat-square)](https://github.com/Okipa/laravel-failed-jobs-notifier/releases)

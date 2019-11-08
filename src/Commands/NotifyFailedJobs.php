@@ -18,7 +18,7 @@ class NotifyFailedJobs extends Command
      *
      * @var string
      */
-    protected $description = 'Notify when failed jobs are stuck for a certain amount of time.';
+    protected $description = 'Notify when failed jobs are stuck for a defined number of days.';
 
     /**
      * Create a new command instance.
