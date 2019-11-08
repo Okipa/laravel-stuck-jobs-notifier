@@ -41,7 +41,7 @@ class Notification extends IlluminateNotification
     public function toMail(): MailMessage
     {
         return (new MailMessage)->error()
-            ->subject($this->stuckFailedJobsCount . 'stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount)
+            ->subject($this->stuckFailedJobsCount . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount)
                 . ' at ' . config('app.url'))
             ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
                 . ' are stuck for ' . config('failed-jobs-notifier.daysLimit') . ' days at ' . config('app.url') . '.')
