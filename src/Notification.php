@@ -41,11 +41,11 @@ class Notification extends IlluminateNotification
     public function toMail(): MailMessage
     {
         return (new MailMessage)->error()
-            ->subject('[' . config('app.name') . ':' . config('app.env') . '] ⚠ ' . $this->stuckFailedJobsCount
+            ->subject('[' . config('app.name') . ' - ' . config('app.env') . '] ⚠ ' . $this->stuckFailedJobsCount
                 . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ' detected')
             ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
                 . ', stuck for at least ' . config('failed-jobs-notifier.daysLimit') . ' days, detected at '
-                . config('app.url') . ' - ' . config('app.name') . '.')
+                . config('app.url') . '.')
             ->line('Please check your failed jobs using the « php artisan queue:failed » command.');
     }
 
@@ -58,7 +58,7 @@ class Notification extends IlluminateNotification
     {
         return (new SlackMessage)
             ->error()
-            ->content('⚠ `' . config('app.name') . ':' . config('app.env') . '`' . $this->stuckFailedJobsCount
+            ->content('⚠ `' . config('app.name') . ' - ' . config('app.env') . '`' . $this->stuckFailedJobsCount
                 . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '
                 . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.');
     }
@@ -72,7 +72,7 @@ class Notification extends IlluminateNotification
     {
         // rocket chat webhook example
         return WebhookMessage::create()->data([
-            'text' => '⚠ `' . config('app.name') . ':' . config('app.env') . '`' . $this->stuckFailedJobsCount
+            'text' => '⚠ `' . config('app.name') . ' - ' . config('app.env') . '`' . $this->stuckFailedJobsCount
                 . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '
                 . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.',
         ])->header('Content-Type', 'application/json');
