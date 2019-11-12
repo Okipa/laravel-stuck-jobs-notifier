@@ -6,10 +6,6 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Schema;
-use Okipa\LaravelFailedJobsNotifier\Test\Dummy\AnotherNotifiable;
-use Okipa\LaravelFailedJobsNotifier\Test\Dummy\AnotherNotification;
-use Okipa\LaravelFailedJobsNotifier\Test\Dummy\WrongNotification;
-use Okipa\LaravelFailedJobsNotifier\Test\BootstrapComponentsTestCase;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification;
@@ -17,12 +13,13 @@ use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidProcessAllowedToRun;
 use Okipa\LaravelFailedJobsNotifier\FailedJobsNotifier;
 use Okipa\LaravelFailedJobsNotifier\Notifiable;
 use Okipa\LaravelFailedJobsNotifier\Notification;
+use Okipa\LaravelFailedJobsNotifier\Test\BootstrapComponentsTestCase;
+use Okipa\LaravelFailedJobsNotifier\Test\Dummy\AnotherNotifiable;
+use Okipa\LaravelFailedJobsNotifier\Test\Dummy\AnotherNotification;
+use Okipa\LaravelFailedJobsNotifier\Test\Dummy\WrongNotification;
 
 class FailedJobMonitorTest extends BootstrapComponentsTestCase
 {
-    //    /** @var \Spatie\FailedJobMonitor\Test\Dummy\TestQueueManager */
-    //    protected $manager;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -134,7 +131,8 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
             'failed_at'  => Carbon::now()->subDays(2),
         ]);
         config()->set('failed-jobs-notifier.notifiable', AnotherNotifiable::class);
-        (new FailedJobsNotifier)->notify();
+        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertSentTo(new AnotherNotifiable(), Notification::class);
     }
 
@@ -148,7 +146,8 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
             'failed_at'  => Carbon::now()->subDays(2),
         ]);
         config()->set('failed-jobs-notifier.notification', AnotherNotification::class);
-        (new FailedJobsNotifier)->notify();
+        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertSentTo(new Notifiable(), AnotherNotification::class);
     }
 
@@ -162,7 +161,8 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
             'failed_at'  => Carbon::now()->subDays(2),
         ]);
         config()->set('failed-jobs-notifier.processAllowedToRun', false);
-        (new FailedJobsNotifier)->notify();
+        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertNotSentTo(new Notifiable(), Notification::class);
     }
 
@@ -178,7 +178,8 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
         config()->set('failed-jobs-notifier.processAllowedToRun', function () {
             return true;
         });
-        (new FailedJobsNotifier)->notify();
+        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertSentTo(new Notifiable(), Notification::class);
     }
 }
