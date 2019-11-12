@@ -132,7 +132,6 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
         ]);
         config()->set('failed-jobs-notifier.notifiable', AnotherNotifiable::class);
         $this->artisan('queue:failed:notify')->assertExitCode(0);
-        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertSentTo(new AnotherNotifiable(), Notification::class);
     }
 
@@ -147,7 +146,6 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
         ]);
         config()->set('failed-jobs-notifier.notification', AnotherNotification::class);
         $this->artisan('queue:failed:notify')->assertExitCode(0);
-        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertSentTo(new Notifiable(), AnotherNotification::class);
     }
 
@@ -162,7 +160,6 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
         ]);
         config()->set('failed-jobs-notifier.processAllowedToRun', false);
         $this->artisan('queue:failed:notify')->assertExitCode(0);
-        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertNotSentTo(new Notifiable(), Notification::class);
     }
 
@@ -179,7 +176,6 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
             return true;
         });
         $this->artisan('queue:failed:notify')->assertExitCode(0);
-        // (new FailedJobsNotifier)->notify();
         NotificationFacade::assertSentTo(new Notifiable(), Notification::class);
     }
 }
