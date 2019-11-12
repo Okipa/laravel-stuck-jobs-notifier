@@ -35,7 +35,11 @@ return [
      * The channels to which the notification will be sent.
      */
 
-    'channels' => ['mail', 'slack', WebhookChannel::class],
+    'channels' => [
+        'mail',
+        'slack',
+        WebhookChannel::class,
+    ],
 
     'mail' => [
         'to' => 'email@example.com',
