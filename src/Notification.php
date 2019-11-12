@@ -45,7 +45,7 @@ class Notification extends IlluminateNotification
                 . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ' detected')
             ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
                 . ', stuck for at least ' . config('failed-jobs-notifier.daysLimit') . ' days, detected at '
-                . config('app.url') . '.')
+                . config('app.url') . ' - ' . config('app.name') . '.')
             ->line('Please check your failed jobs using the « php artisan queue:failed » command.');
     }
 
