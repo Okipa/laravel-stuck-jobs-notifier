@@ -25,7 +25,7 @@ return [
     * You can pass a boolean or a callable to authorize or block the notification process.
     * If the boolean or the callable return false, no notification will be sent.
     */
-    'allowedToRun' => env('APP_ENV', 'production') !== 'local',
+    'allowedToRun' => env('APP_ENV') !== 'local',
 
     /*
      * The channels to which the notification will be sent.
