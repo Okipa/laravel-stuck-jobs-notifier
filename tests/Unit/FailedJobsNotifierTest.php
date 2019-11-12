@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification;
-use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidProcessAllowedToRun;
+use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun;
 use Okipa\LaravelFailedJobsNotifier\FailedJobsNotifier;
 use Okipa\LaravelFailedJobsNotifier\Notifiable;
 use Okipa\LaravelFailedJobsNotifier\Notification;
@@ -26,27 +26,27 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
         NotificationFacade::fake();
     }
 
-    public function testSetProcessAllowedToRunWithWrongValue()
+    public function testSetAllowedToRunWithWrongValue()
     {
-        config()->set('failed-jobs-notifier.processAllowedToRun', 'test');
-        $this->expectException(InvalidProcessAllowedToRun::class);
-        (new FailedJobsNotifier)->processIsAllowedToRun();
+        config()->set('failed-jobs-notifier.allowedToRun', 'test');
+        $this->expectException(InvalidAllowedToRun::class);
+        (new FailedJobsNotifier)->isAllowedToRun();
     }
 
-    public function testSetProcessAllowedToRunWithBoolean()
+    public function testSetAllowedToRunWithBoolean()
     {
-        config()->set('failed-jobs-notifier.processAllowedToRun', false);
-        $processAllowedToRun = (new FailedJobsNotifier)->processIsAllowedToRun();
-        $this->assertEquals($processAllowedToRun, false);
+        config()->set('failed-jobs-notifier.allowedToRun', false);
+        $allowedToRun = (new FailedJobsNotifier)->isAllowedToRun();
+        $this->assertEquals($allowedToRun, false);
     }
 
-    public function testSetProcessAllowedToRunWithCallable()
+    public function testSetAllowedToRunWithCallable()
     {
-        config()->set('failed-jobs-notifier.processAllowedToRun', function () {
+        config()->set('failed-jobs-notifier.allowedToRun', function () {
             return true;
         });
-        $processAllowedToRun = (new FailedJobsNotifier)->processIsAllowedToRun();
-        $this->assertEquals($processAllowedToRun, true);
+        $allowedToRun = (new FailedJobsNotifier)->isAllowedToRun();
+        $this->assertEquals($allowedToRun, true);
     }
 
     public function testFailedJobTableDoesNotExists()
@@ -158,7 +158,7 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
             'exception'  => 'test',
             'failed_at'  => Carbon::now()->subDays(2),
         ]);
-        config()->set('failed-jobs-notifier.processAllowedToRun', false);
+        config()->set('failed-jobs-notifier.allowedToRun', false);
         $this->artisan('queue:failed:notify')->assertExitCode(0);
         NotificationFacade::assertNotSentTo(new Notifiable(), Notification::class);
     }
@@ -172,7 +172,7 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
             'exception'  => 'test',
             'failed_at'  => Carbon::now()->subDays(2),
         ]);
-        config()->set('failed-jobs-notifier.processAllowedToRun', function () {
+        config()->set('failed-jobs-notifier.allowedToRun', function () {
             return true;
         });
         $this->artisan('queue:failed:notify')->assertExitCode(0);

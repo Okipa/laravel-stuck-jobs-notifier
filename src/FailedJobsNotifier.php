@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification;
-use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidProcessAllowedToRun;
+use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun;
 
 class FailedJobsNotifier
 {
@@ -18,11 +18,11 @@ class FailedJobsNotifier
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification
-     * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidProcessAllowedToRun
+     * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun
      */
     public function notify(): void
     {
-        if ($this->processIsAllowedToRun()) {
+        if ($this->isAllowedToRun()) {
             $stuckFailedJobs = $this->getStuckFailedJobs();
             if ($stuckFailedJobs->isNotEmpty()) {
                 $notifiable = app(config('failed-jobs-notifier.notifiable'));
@@ -34,17 +34,17 @@ class FailedJobsNotifier
 
     /**
      * @return bool
-     * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidProcessAllowedToRun
+     * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun
      */
-    public function processIsAllowedToRun(): bool
+    public function isAllowedToRun(): bool
     {
-        $processAllowedToRun = config('failed-jobs-notifier.processAllowedToRun');
-        if (is_callable($processAllowedToRun)) {
-            return $processAllowedToRun();
-        } elseif (is_bool($processAllowedToRun)) {
-            return $processAllowedToRun;
+        $allowedToRun = config('failed-jobs-notifier.allowedToRun');
+        if (is_callable($allowedToRun)) {
+            return $allowedToRun();
+        } elseif (is_bool($allowedToRun)) {
+            return $allowedToRun;
         }
-        throw new InvalidProcessAllowedToRun('The processAllowedToRun config value is not a boolean or a callable.');
+        throw new InvalidAllowedToRun('The allowedToRun config value is not a boolean or a callable.');
     }
 
     /**

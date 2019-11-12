@@ -4,6 +4,7 @@
 
 2019-11-12
 
+- Simplified `processAllowedToRun` config label to `allowedToRun`.
 - Added the `config('app.env')` data to the default notification messages for the different channels.
 - Improved test coverage.
 

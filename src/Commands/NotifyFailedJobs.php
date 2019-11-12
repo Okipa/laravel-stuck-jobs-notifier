@@ -37,7 +37,7 @@ class NotifyFailedJobs extends Command
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification
-     * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidProcessAllowedToRun
+     * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun
      */
     public function handle()
     {
