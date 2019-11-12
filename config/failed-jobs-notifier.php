@@ -25,11 +25,10 @@ return [
     * You can pass a boolean or a callable to authorize or block the notification process.
     * If the boolean or the callable return false, no notification will be sent.
     */
-    'allowedToRun' => true,
-    // could also be :
-    // 'allowedToRun' => function () {
-    //     return true;
-    // },
+    'allowedToRun' => function () {
+        return ! app()->environment('local');
+    },
+    // could also be : 'allowedToRun' => true,
 
     /*
      * The channels to which the notification will be sent.
