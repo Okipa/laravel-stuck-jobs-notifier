@@ -56,7 +56,7 @@ class FailedJobsNotifier
     {
         $this->checkFailedJobsTableExists();
         $daysLimit = $this->getDaysLimit();
-        $dateLimit = Carbon::now()->subDays($daysLimit)->endOfDay();
+        $dateLimit = Carbon::now()->subDays($daysLimit);
 
         return DB::table('failed_jobs')->where('failed_at', '<=', $dateLimit)->get();
     }

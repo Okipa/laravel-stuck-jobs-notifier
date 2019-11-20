@@ -9,7 +9,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/Okipa/laravel-failed-jobs-notifier.svg?style=flat-square)](https://scrutinizer-ci.com/g/Okipa/laravel-failed-jobs-notifier/?branch=master)
 
 Get notified when some jobs are stuck in your `failed_jobs` table for a number of days of your choice.  
-Notifications can be sent by mail, Slack and webhooks (chats often have webhook APIs).  
+Notifications can be sent by mail, Slack and webhooks (chats often provide a webhook API).  
 
 ## Compatibility
 
@@ -57,14 +57,14 @@ php artisan vendor:publish --tag=failed-jobs-notifier:config
 Just add this command in the `schedule()` method of your `\App\Console\Kernel` class :
 
 ```php
-$schedule->command('queue:failed:notify')->dailyAt('12:00');
+$schedule->command('queue:failed:notify')->twiceDaily(9, 15);
 ```
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
 
 ## Testing
 
-``` bash
+```bash
 composer test
 ```
 

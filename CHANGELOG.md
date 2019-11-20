@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.3](https://github.com/Okipa/laravel-failed-jobs-notifier/releases/tag/1.0.3)
+
+2019-11-20
+
+- Improved the stuck failed jobs identification in order to get them as soon as they are stuck for the configured number of days (or more).
+
 ## [1.0.2](https://github.com/Okipa/laravel-failed-jobs-notifier/releases/tag/1.0.2)
 
 2019-11-12

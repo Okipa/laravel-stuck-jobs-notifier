@@ -95,7 +95,7 @@ class FailedJobMonitorTest extends BootstrapComponentsTestCase
         }
         config()->set('failed-jobs-notifier.daysLimit', 5);
         $stuckFailedJobs = (new FailedJobsNotifier)->getStuckFailedJobs();
-        $dateLimit = Carbon::now()->subDays(5)->endOfDay();
+        $dateLimit = Carbon::now()->subDays(5);
         foreach ($stuckFailedJobs as $stuckFailedJob) {
             $this->assertTrue($dateLimit->greaterThanOrEqualTo($stuckFailedJob->failed_at));
         }
