@@ -7,19 +7,19 @@ return [
     /*
      * The number of days limit from which jobs will be considered as stuck.
      */
-    'daysLimit'    => 2,
+    'daysLimit' => 2,
 
     /*
      * The notifiable to which the notification will be sent. The default
      * notifiable will use the mail and slack configuration specified
      * in this config file.
      */
-    'notifiable'   => \Okipa\LaravelFailedJobsNotifier\Notifiable::class,
+    'notifiable' => Okipa\LaravelFailedJobsNotifier\Notifiable::class,
 
     /*
      * The notification that will be sent when stuck jobs are detected.
      */
-    'notification' => \Okipa\LaravelFailedJobsNotifier\Notification::class,
+    'notification' => Okipa\LaravelFailedJobsNotifier\Notification::class,
 
     /*
     * You can pass a boolean or a callable to authorize or block the notification process.
@@ -30,24 +30,13 @@ return [
     /*
      * The channels to which the notification will be sent.
      */
+    'channels' => ['mail', 'slack', WebhookChannel::class],
 
-    'channels' => [
-        'mail',
-        'slack',
-        WebhookChannel::class,
-    ],
+    'mail' => ['to' => 'email@example.test'],
 
-    'mail' => [
-        'to' => 'email@example.com',
-    ],
+    'slack' => ['webhookUrl' => 'https://your-slack-webhook.slack.com'],
 
-    'slack' => [
-        'webhook_url' => 'https://your-slack-webhook.slack.com',
-    ],
-
-    'webhook' => [
-        // rocket chat webhook example
-        'url' => 'https://rocket.chat/hooks/1234/5678',
-    ],
+    // rocket chat webhook example
+    'webhook' => ['url' => 'https://rocket.chat/hooks/1234/5678'],
 
 ];

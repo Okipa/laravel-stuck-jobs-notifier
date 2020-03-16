@@ -21,9 +21,12 @@ class Notifiable
      */
     public function routeNotificationForSlack(): string
     {
-        return config('failed-jobs-notifier.slack.webhook_url');
+        return config('failed-jobs-notifier.slack.webhookUrl');
     }
 
+    /**
+     * @return string
+     */
     public function routeNotificationForWebhook(): string
     {
         return config('failed-jobs-notifier.webhook.url');

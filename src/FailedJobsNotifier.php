@@ -3,14 +3,14 @@
 namespace Okipa\LaravelFailedJobsNotifier;
 
 use Carbon\Carbon;
-use DB;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable;
+use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit;
 use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification;
-use Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun;
 
 class FailedJobsNotifier
 {
@@ -94,6 +94,7 @@ class FailedJobsNotifier
      */
     public function getNotification(Collection $stuckFailedJobs): Notification
     {
+        /** @var \Okipa\LaravelFailedJobsNotifier\Notification|mixed $notification */
         $notification = app(config('failed-jobs-notifier.notification'), ['stuckFailedJobs' => $stuckFailedJobs]);
         if (! $notification instanceof Notification || ! is_subclass_of($notification, Notification::class)) {
             throw new InvalidNotification('The configured notification does not extend ' . Notification::class);
