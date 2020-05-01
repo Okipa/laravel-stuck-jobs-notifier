@@ -13,6 +13,7 @@ class NotifyFailedJobs extends Command
      * @var string
      */
     protected $signature = 'queue:failed:notify';
+
     /**
      * The console command description.
      *
@@ -21,25 +22,12 @@ class NotifyFailedJobs extends Command
     protected $description = 'Notify when failed jobs are stuck for a defined number of days.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InexistentFailedJobsTable
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidDaysLimit
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidNotification
      * @throws \Okipa\LaravelFailedJobsNotifier\Exceptions\InvalidAllowedToRun
      */
-    public function handle()
+    public function handle(): void
     {
         (new FailedJobsNotifier)->notify();
     }

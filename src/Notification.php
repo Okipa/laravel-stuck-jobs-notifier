@@ -13,11 +13,6 @@ class Notification extends IlluminateNotification
 {
     protected $stuckFailedJobsCount;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @param \Illuminate\Support\Collection $stuckFailedJobs
-     */
     public function __construct(Collection $stuckFailedJobs)
     {
         $this->stuckFailedJobsCount = $stuckFailedJobs->count();
@@ -64,7 +59,7 @@ class Notification extends IlluminateNotification
     }
 
     /**
-     * Get the webhook representation of the notification.q
+     * Get the webhook representation of the notification.
      *
      * @return \NotificationChannels\Webhook\WebhookMessage
      */

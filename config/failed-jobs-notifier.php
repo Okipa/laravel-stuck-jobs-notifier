@@ -7,7 +7,7 @@ return [
     /*
      * The number of days limit from which jobs will be considered as stuck.
      */
-    'daysLimit' => 2,
+    'daysLimit' => 1,
 
     /*
      * The notifiable to which the notification will be sent. The default
