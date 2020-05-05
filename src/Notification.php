@@ -13,9 +13,12 @@ class Notification extends IlluminateNotification
 {
     protected int $stuckJobsCount;
 
+    protected int $isPlural;
+
     public function __construct(Collection $stuckJobs)
     {
         $this->stuckJobsCount = $stuckJobs->count();
+        $this->isPlural = $this->stuckJobsCount > 1;
     }
 
     /**
@@ -35,12 +38,15 @@ class Notification extends IlluminateNotification
      */
     public function toMail(): MailMessage
     {
-        return (new MailMessage)->error()->subject('[' . config('app.name') . ' - ' . config('app.env') . '] ⚠ '
-            . $this->stuckJobsCount . ' stuck failed ' . Str::plural('job', $this->stuckJobsCount) . ' detected')
-            ->line($this->stuckJobsCount . ' failed ' . Str::plural('job', $this->stuckJobsCount)
-                . ', stuck for at least ' . config('stuck-jobs-notifier.hours_limit') . ' days, detected at '
-                . config('app.url') . '.')
-            ->line('Please check your stuck jobs using the « php artisan queue:failed » command.');
+        return (new MailMessage)->level('error')
+            ->subject('⚠ ' . $this->stuckJobsCount . ' stuck ' . Str::plural('job', $this->stuckJobsCount)
+                . ' detected')
+            ->line('We have detected' . $this->stuckJobsCount . ' failed ' . Str::plural('job', $this->stuckJobsCount)
+                . ' that ' . ($this->isPlural ? 'are' : 'is') . ' stuck since at least '
+                . config('stuck-jobs-notifier.hours_limit') . ' hours on [' . config('app.name') . ']('
+                . config('app.url') . ').')
+            ->line('Please check your stuck jobs connecting to your server and using the '
+                . '« php artisan queue:failed » command.');
     }
 
     /**
@@ -52,7 +58,7 @@ class Notification extends IlluminateNotification
     {
         return (new SlackMessage)->error()->content('⚠ `' . config('app.name') . ' - ' . config('app.env') . '` '
             . $this->stuckJobsCount . ' failed ' . Str::plural('job', $this->stuckJobsCount) . ', stuck for at least '
-            . config('stuck-jobs-notifier.hours_limit') . ' days, detected at ' . config('app.url') . '.');
+            . config('stuck-jobs-notifier.hours_limit') . ' hours, detected at ' . config('app.url') . '.');
     }
 
     /**
@@ -66,7 +72,7 @@ class Notification extends IlluminateNotification
         return WebhookMessage::create()->data([
             'text' => '⚠ `' . config('app.name') . ' - ' . config('app.env') . '` ' . $this->stuckJobsCount
                 . ' failed ' . Str::plural('job', $this->stuckJobsCount) . ', stuck for at least '
-                . config('stuck-jobs-notifier.hours_limit') . ' days, detected at ' . config('app.url') . '.',
+                . config('stuck-jobs-notifier.hours_limit') . ' hours, detected at ' . config('app.url') . '.',
         ])->header('Content-Type', 'application/json');
     }
 }

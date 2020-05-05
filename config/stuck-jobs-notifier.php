@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
 use NotificationChannels\Webhook\WebhookChannel;
 
 return [
@@ -8,7 +7,7 @@ return [
     /*
      * The number of hours from which the failed jobs are considered as stuck.
      */
-    'hours_limit' => 3,
+    'hours_limit' => 2,
 
     /*
      * The notifiable to which the notification will be sent. The default
