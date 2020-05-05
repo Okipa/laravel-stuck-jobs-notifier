@@ -4,7 +4,7 @@ namespace Okipa\LaravelStuckJobsNotifier\Exceptions;
 
 use Exception;
 
-class InvalidNotification extends Exception
+class StuckJobsDetected extends Exception
 {
     //
 }

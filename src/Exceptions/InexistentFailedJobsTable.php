@@ -1,6 +1,6 @@
 <?php
 
-namespace Okipa\LaravelFailedJobsNotifier\Exceptions;
+namespace Okipa\LaravelStuckJobsNotifier\Exceptions;
 
 use Exception;
 

@@ -2,9 +2,12 @@
 
 namespace Okipa\LaravelStuckJobsNotifier\Test\Dummy;
 
-class Job
+use Mockery\Exception;
+
+class Callback
 {
     public function __construct()
     {
+        throw new Exception('test');
     }
 }

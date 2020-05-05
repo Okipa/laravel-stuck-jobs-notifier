@@ -1,6 +1,6 @@
 <?php
 
-namespace Okipa\LaravelFailedJobsNotifier;
+namespace Okipa\LaravelStuckJobsNotifier;
 
 use Illuminate\Notifications\Notifiable as NotifiableTrait;
 
@@ -10,17 +10,17 @@ class Notifiable
 
     public function routeNotificationForMail(): string
     {
-        return config('failed-jobs-notifier.mail.to');
+        return config('stuck-jobs-notifier.mail.to');
     }
 
     public function routeNotificationForSlack(): string
     {
-        return config('failed-jobs-notifier.slack.webhookUrl');
+        return config('stuck-jobs-notifier.slack.webhookUrl');
     }
 
     public function routeNotificationForWebhook(): string
     {
-        return config('failed-jobs-notifier.webhook.url');
+        return config('stuck-jobs-notifier.webhook.url');
     }
 
     public function getKey(): int
