@@ -10,7 +10,7 @@ The package name has changed to better fits with the real features it provides.
 
 The name changed from `laravel-failed-jobs-notifier` to `laravel-stuck-jobs-notifier`.
 
-As so, the old package has been archived, marked as abandoned and now suggest to use the new one.
+As so, the old package has been archived, marked as abandoned and now suggest using the new one.
 
 ## Command signature change
 
