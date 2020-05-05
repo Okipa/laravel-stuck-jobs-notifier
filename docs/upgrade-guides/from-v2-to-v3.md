@@ -12,6 +12,10 @@ The name changed from `laravel-failed-jobs-notifier` to `laravel-stuck-jobs-noti
 
 As so, the old package has been archived, marked as abandoned and now suggest to use the new one.
 
+## Command signature change
+
+The command signature changed from `queue:failed:notify` to `queue:stuck:notify`;
+
 ## Config changes
 
 The config file name has changed from `failed-jobs-notifier.php` to `stuck-jobs-notifier.php`.

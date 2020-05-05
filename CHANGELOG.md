@@ -4,9 +4,14 @@
 
 2020-04-05
 
-* Changed the name of the package from `failed-jobs-notifier` to `stuck-jobs-notifier` to fit with the real feature it provides.
+* Changed the name of the package.
+* Changed the command signature.
 * Changed configuration file name and structure.
-* Changed Classes and Exceptions names.
+* Changed classes and exceptions names.
+* Dropped support for PHP versions under 7.4.
+* Dropped support for Laravel versions under 6.0.
+
+:point_right: [See the upgrade guide](/docs/upgrade-guides/from-v2-to-v3.md)
 
 ## [2.0.0](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/1.1.0...2.0.0)
 

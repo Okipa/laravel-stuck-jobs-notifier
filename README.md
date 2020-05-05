@@ -20,6 +20,10 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 | ^5.8 | ^7.2 | ^2.0 |
 | ^5.5 | ^7.1 | ^1.0 |
 
+## Upgrade guide
+
+* [From V2 to V3](/docs/upgrade-guides/from-v2-to-v3.md)
+
 ## Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)
