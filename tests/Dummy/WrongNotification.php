@@ -1,8 +1,8 @@
 <?php
 
-namespace Okipa\LaravelFailedJobsNotifier\Test\Dummy;
+namespace Okipa\LaravelStuckJobsNotifier\Test\Dummy;
 
-use Okipa\LaravelFailedJobsNotifier\Notification;
+use Okipa\LaravelStuckJobsNotifier\Notification;
 
 class WrongNotification
 {

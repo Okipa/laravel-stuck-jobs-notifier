@@ -1,9 +1,9 @@
 <?php
 
-namespace Okipa\LaravelFailedJobsNotifier\Test;
+namespace Okipa\LaravelStuckJobsNotifier\Test;
 
 use Faker\Factory;
-use Okipa\LaravelFailedJobsNotifier\FailedJobsReporterServiceProvider;
+use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifierServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 abstract class BootstrapComponentsTestCase extends TestCase
@@ -37,7 +37,7 @@ abstract class BootstrapComponentsTestCase extends TestCase
      */
     protected function getPackageProviders($app)
     {
-        return [FailedJobsReporterServiceProvider::class];
+        return [StuckJobsNotifierServiceProvider::class];
     }
 
     /**

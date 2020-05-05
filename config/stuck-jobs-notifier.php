@@ -5,21 +5,21 @@ use NotificationChannels\Webhook\WebhookChannel;
 return [
 
     /*
-     * The number of days limit from which jobs will be considered as stuck.
+     * The number of hours from which the failed jobs are considered as stuck.
      */
-    'daysLimit' => 1,
+    'hoursLimit' => 3,
 
     /*
      * The notifiable to which the notification will be sent. The default
      * notifiable will use the mail and slack configuration specified
      * in this config file.
      */
-    'notifiable' => Okipa\LaravelFailedJobsNotifier\Notifiable::class,
+    'notifiable' => Okipa\LaravelStuckJobsNotifier\Notifiable::class,
 
     /*
      * The notification that will be sent when stuck jobs are detected.
      */
-    'notification' => Okipa\LaravelFailedJobsNotifier\Notification::class,
+    'notification' => Okipa\LaravelStuckJobsNotifier\Notification::class,
 
     /*
     * You can pass a boolean or a callable to authorize or block the notification process.

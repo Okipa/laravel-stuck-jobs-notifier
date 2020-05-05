@@ -1,6 +1,6 @@
 <?php
 
-namespace Okipa\LaravelFailedJobsNotifier;
+namespace Okipa\LaravelStuckJobsNotifier;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
@@ -11,11 +11,11 @@ use NotificationChannels\Webhook\WebhookMessage;
 
 class Notification extends IlluminateNotification
 {
-    protected $stuckFailedJobsCount;
+    protected int $stuckJobsCount;
 
-    public function __construct(Collection $stuckFailedJobs)
+    public function __construct(Collection $stuckJobs)
     {
-        $this->stuckFailedJobsCount = $stuckFailedJobs->count();
+        $this->stuckJobsCount = $stuckJobs->count();
     }
 
     /**
@@ -25,7 +25,7 @@ class Notification extends IlluminateNotification
      */
     public function via(): array
     {
-        return config('failed-jobs-notifier.channels');
+        return config('stuck-jobs-notifier.channels');
     }
 
     /**
@@ -35,13 +35,12 @@ class Notification extends IlluminateNotification
      */
     public function toMail(): MailMessage
     {
-        return (new MailMessage)->error()
-            ->subject('[' . config('app.name') . ' - ' . config('app.env') . '] ⚠ ' . $this->stuckFailedJobsCount
-                . ' stuck failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ' detected')
-            ->line($this->stuckFailedJobsCount . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount)
-                . ', stuck for at least ' . config('failed-jobs-notifier.daysLimit') . ' days, detected at '
+        return (new MailMessage)->error()->subject('[' . config('app.name') . ' - ' . config('app.env') . '] ⚠ '
+            . $this->stuckJobsCount . ' stuck failed ' . Str::plural('job', $this->stuckJobsCount) . ' detected')
+            ->line($this->stuckJobsCount . ' failed ' . Str::plural('job', $this->stuckJobsCount)
+                . ', stuck for at least ' . config('stuck-jobs-notifier.hoursLimit') . ' days, detected at '
                 . config('app.url') . '.')
-            ->line('Please check your failed jobs using the « php artisan queue:failed » command.');
+            ->line('Please check your stuck jobs using the « php artisan queue:failed » command.');
     }
 
     /**
@@ -51,11 +50,9 @@ class Notification extends IlluminateNotification
      */
     public function toSlack(): SlackMessage
     {
-        return (new SlackMessage)
-            ->error()
-            ->content('⚠ `' . config('app.name') . ' - ' . config('app.env') . '` ' . $this->stuckFailedJobsCount
-                . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '
-                . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.');
+        return (new SlackMessage)->error()->content('⚠ `' . config('app.name') . ' - ' . config('app.env') . '` '
+            . $this->stuckJobsCount . ' failed ' . Str::plural('job', $this->stuckJobsCount) . ', stuck for at least '
+            . config('failed-jobs-notifier.hoursLimit') . ' days, detected at ' . config('app.url') . '.');
     }
 
     /**
@@ -67,9 +64,9 @@ class Notification extends IlluminateNotification
     {
         // rocket chat webhook example
         return WebhookMessage::create()->data([
-            'text' => '⚠ `' . config('app.name') . ' - ' . config('app.env') . '` ' . $this->stuckFailedJobsCount
-                . ' failed ' . Str::plural('job', $this->stuckFailedJobsCount) . ', stuck for at least '
-                . config('failed-jobs-notifier.daysLimit') . ' days, detected at ' . config('app.url') . '.',
+            'text' => '⚠ `' . config('app.name') . ' - ' . config('app.env') . '` ' . $this->stuckJobsCount
+                . ' failed ' . Str::plural('job', $this->stuckJobsCount) . ', stuck for at least '
+                . config('failed-jobs-notifier.hoursLimit') . ' days, detected at ' . config('app.url') . '.',
         ])->header('Content-Type', 'application/json');
     }
 }
