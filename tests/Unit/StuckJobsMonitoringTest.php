@@ -4,18 +4,20 @@ namespace Okipa\LaravelStuckJobsNotifier\Test\Unit;
 
 use Carbon\Carbon;
 use DB;
+use Exception;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Schema;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidNotification;
-use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifier;
 use Okipa\LaravelStuckJobsNotifier\Notifiable;
 use Okipa\LaravelStuckJobsNotifier\Notification;
+use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifier;
 use Okipa\LaravelStuckJobsNotifier\Test\BootstrapComponentsTestCase;
 use Okipa\LaravelStuckJobsNotifier\Test\Dummy\AnotherNotifiable;
 use Okipa\LaravelStuckJobsNotifier\Test\Dummy\AnotherNotification;
+use Okipa\LaravelStuckJobsNotifier\Test\Dummy\Callback;
 use Okipa\LaravelStuckJobsNotifier\Test\Dummy\WrongNotification;
 
 class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
@@ -28,25 +30,32 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
 
     public function testAllowedToRunWithWrongValue()
     {
-        config()->set('failed-jobs-notifier.allowedToRun', 'test');
+        config()->set('stuck-jobs-notifier.allowed_to_run', 'test');
         $this->expectException(InvalidAllowedToRun::class);
         (new StuckJobsNotifier)->isAllowedToRun();
     }
 
     public function testAllowedToRunWithBoolean()
     {
-        config()->set('failed-jobs-notifier.allowedToRun', false);
+        config()->set('stuck-jobs-notifier.allowed_to_run', false);
         $allowedToRun = (new StuckJobsNotifier)->isAllowedToRun();
         $this->assertEquals($allowedToRun, false);
     }
 
     public function testAllowedToRunWithCallable()
     {
-        config()->set('failed-jobs-notifier.allowedToRun', function () {
+        config()->set('stuck-jobs-notifier.allowed_to_run', function () {
             return true;
         });
         $allowedToRun = (new StuckJobsNotifier)->isAllowedToRun();
         $this->assertEquals($allowedToRun, true);
+    }
+
+    public function testCustomCallback()
+    {
+        config()->set('stuck-jobs-notifier.callback', Callback::class);
+        $this->expectException(Exception::class);
+        (new StuckJobsNotifier)->executeCallback(collect(['test']));
     }
 
     public function testFailedJobTableDoesNotExists()
@@ -58,15 +67,15 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
 
     public function testSetDaysLimitWithWrongValue()
     {
-        config()->set('failed-jobs-notifier.hoursLimit', 'test');
+        config()->set('stuck-jobs-notifier.hours_limit', 'test');
         $this->expectException(InvalidHoursLimit::class);
-        (new StuckJobsNotifier)->getDaysLimit();
+        (new StuckJobsNotifier)->getHoursLimit();
     }
 
     public function testSetDaysLimitWithInt()
     {
-        config()->set('failed-jobs-notifier.hoursLimit', 5);
-        $hoursLimit = (new StuckJobsNotifier)->getDaysLimit();
+        config()->set('stuck-jobs-notifier.hours_limit', 5);
+        $hoursLimit = (new StuckJobsNotifier)->getHoursLimit();
         $this->assertEquals(5, $hoursLimit);
     }
 
@@ -92,14 +101,17 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
                 'failed_at' => $failedAt,
             ]);
         }
-        config()->set('failed-jobs-notifier.hoursLimit', 5);
+        config()->set('stuck-jobs-notifier.hours_limit', 5);
         $stuckJobs = (new StuckJobsNotifier)->getStuckFailedJobs();
-        $this->assertCount(4, $stuckJobs);
+        $dateLimit = (new StuckJobsNotifier)->getDateLimit();
+        foreach ($stuckJobs as $stuckJob) {
+            $this->assertTrue($dateLimit->greaterThanOrEqualTo($stuckJob->failed_at));
+        }
     }
 
     public function testGetWrongNotification()
     {
-        config()->set('failed-jobs-notifier.notification', WrongNotification::class);
+        config()->set('stuck-jobs-notifier.notification', WrongNotification::class);
         $this->expectException(InvalidNotification::class);
         (new StuckJobsNotifier)->getNotification(collect([]));
     }
@@ -112,7 +124,7 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
 
     public function testGetCustomNotification()
     {
-        config()->set('failed-jobs-notifier.notification', AnotherNotification::class);
+        config()->set('stuck-jobs-notifier.notification', AnotherNotification::class);
         $notification = (new StuckJobsNotifier)->getNotification(collect([]));
         $this->assertInstanceOf(\Illuminate\Notifications\Notification::class, $notification);
     }
@@ -124,10 +136,12 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
             'queue' => 'default',
             'payload' => 'test',
             'exception' => 'test',
-            'failed_at' => Carbon::now()->subDays(2),
+            'failed_at' => Carbon::now()->subDays(4),
         ]);
-        config()->set('failed-jobs-notifier.notifiable', AnotherNotifiable::class);
-        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        config()->set('stuck-jobs-notifier.callback', null);
+        config()->set('stuck-jobs-notifier.hours_limit', 3);
+        config()->set('stuck-jobs-notifier.notifiable', AnotherNotifiable::class);
+        $this->artisan('queue:stuck:notify')->assertExitCode(0);
         NotificationFacade::assertSentTo(new AnotherNotifiable(), Notification::class);
     }
 
@@ -138,10 +152,12 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
             'queue' => 'default',
             'payload' => 'test',
             'exception' => 'test',
-            'failed_at' => Carbon::now()->subDays(2),
+            'failed_at' => Carbon::now()->subDays(4),
         ]);
-        config()->set('failed-jobs-notifier.notification', AnotherNotification::class);
-        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        config()->set('stuck-jobs-notifier.callback', null);
+        config()->set('stuck-jobs-notifier.hours_limit', 3);
+        config()->set('stuck-jobs-notifier.notification', AnotherNotification::class);
+        $this->artisan('queue:stuck:notify')->assertExitCode(0);
         NotificationFacade::assertSentTo(new Notifiable(), AnotherNotification::class);
     }
 
@@ -152,26 +168,11 @@ class StuckJobsMonitoringTest extends BootstrapComponentsTestCase
             'queue' => 'default',
             'payload' => 'test',
             'exception' => 'test',
-            'failed_at' => Carbon::now()->subDays(2),
+            'failed_at' => Carbon::now()->subHours(4),
         ]);
-        config()->set('failed-jobs-notifier.allowedToRun', false);
-        $this->artisan('queue:failed:notify')->assertExitCode(0);
+        config()->set('stuck-jobs-notifier.hours_limit', 3);
+        config()->set('stuck-jobs-notifier.allowed_to_run', false);
+        $this->artisan('queue:stuck:notify')->assertExitCode(0);
         NotificationFacade::assertNotSentTo(new Notifiable(), Notification::class);
-    }
-
-    public function testNotificationIsNotSentWhenAllowedTo()
-    {
-        DB::table('failed_jobs')->insert([
-            'connection' => 'whatever',
-            'queue' => 'default',
-            'payload' => 'test',
-            'exception' => 'test',
-            'failed_at' => Carbon::now()->subDays(2),
-        ]);
-        config()->set('failed-jobs-notifier.allowedToRun', function () {
-            return true;
-        });
-        $this->artisan('queue:failed:notify')->assertExitCode(0);
-        NotificationFacade::assertSentTo(new Notifiable(), Notification::class);
     }
 }

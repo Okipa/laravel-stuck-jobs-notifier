@@ -7,7 +7,7 @@
 * Changed the name of the package.
 * Changed the command signature.
 * Changed configuration file name and structure.
-* Changed classes and exceptions names.
+* Changed some class and exception names.
 * Dropped support for PHP versions under 7.4.
 * Dropped support for Laravel versions under 6.0.
 

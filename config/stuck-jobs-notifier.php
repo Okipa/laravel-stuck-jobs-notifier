@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use NotificationChannels\Webhook\WebhookChannel;
 
 return [
@@ -7,7 +8,7 @@ return [
     /*
      * The number of hours from which the failed jobs are considered as stuck.
      */
-    'hoursLimit' => 3,
+    'hours_limit' => 3,
 
     /*
      * The notifiable to which the notification will be sent. The default
@@ -22,10 +23,17 @@ return [
     'notification' => Okipa\LaravelStuckJobsNotifier\Notification::class,
 
     /*
+     * The callback that will be executed when stuck jobs are detected.
+     * Any class can be called here and will receive a $stuckJobs collection in its constructor.
+     * Can be set to null if you do not want any callback to be executed.
+     */
+    'callback' => Okipa\LaravelStuckJobsNotifier\Callback::class,
+
+    /*
     * You can pass a boolean or a callable to authorize or block the notification process.
     * If the boolean or the callable return false, no notification will be sent.
     */
-    'allowedToRun' => env('APP_ENV') !== 'local',
+    'allowed_to_run' => env('APP_ENV') !== 'local',
 
     /*
      * The channels to which the notification will be sent.

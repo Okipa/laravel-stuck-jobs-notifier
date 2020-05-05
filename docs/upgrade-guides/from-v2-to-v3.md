@@ -14,7 +14,7 @@ As so, the old package has been archived, marked as abandoned and now suggest to
 
 ## Command signature change
 
-The command signature changed from `queue:failed:notify` to `queue:stuck:notify`;
+The command signature changed from `queue:stuck:notify` to `queue:stuck:notify`;
 
 ## Config changes
 
@@ -24,8 +24,9 @@ Some config variable names have changed have been made. If you customized it, yo
 
 ## Classes and exception name changes
 
-In case of customizations, please note that the following classes and exception names have changed:
-* 
+In case of customizations, please note that the following class and exception names have changed:
+* `FailedJobsNotifier` class has been renamed `StuckJobsNotifier`.
+* `InvalidDaysLimit` exception has been renamed `InvalidHoursLimit`.
 
 ## See all changes
 
