@@ -44,7 +44,7 @@ class Notification extends IlluminateNotification
             ->line('We have detected' . $this->stuckJobsCount . ' failed ' . Str::plural('job', $this->stuckJobsCount)
                 . ' that ' . ($this->isPlural ? 'are' : 'is') . ' stuck since at least '
                 . config('stuck-jobs-notifier.hours_limit') . ' hours on [' . config('app.name') . ']('
-                . config('app.url') . ') app.')
+                . config('app.url') . ').')
             ->line('Please check your stuck jobs connecting to your server and using the '
                 . '« php artisan queue:failed » command.');
     }
