@@ -55,7 +55,7 @@ php artisan vendor:publish --tag=stuck-jobs-notifier:config
 Just add this command in the `schedule()` method of your `\App\Console\Kernel` class :
 
 ```php
-$schedule->command('queue:stuck:notify')->twiceDaily(9, 15);
+$schedule->command('queue:stuck:notify')->twiceDaily(10, 16);
 ```
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
