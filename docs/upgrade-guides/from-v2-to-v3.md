@@ -20,7 +20,7 @@ The command signature changed from `queue:stuck:notify` to `queue:stuck:notify`;
 
 The config file name has changed from `failed-jobs-notifier.php` to `stuck-jobs-notifier.php`.
 
-Some config variable names have changed have been made. If you customized it, you should [re-publish it](../../README.md#configuration) and reapply your changes.
+Some config keys have changed. If you customized it, you should [re-publish it](../../README.md#configuration) and reapply your changes.
 
 ## Classes and exception name changes
 
