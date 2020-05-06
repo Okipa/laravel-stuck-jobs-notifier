@@ -4,11 +4,11 @@
 [![Latest Version](https://img.shields.io/github/release/okipa/laravel-stuck-jobs-notifier.svg?style=flat-square)](https://github.com/Okipa/laravel-stuck-jobs-notifier/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/okipa/laravel-stuck-jobs-notifier.svg?style=flat-square)](https://packagist.org/packages/okipa/laravel-stuck-jobs-notifier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/Okipa/laravel-stuck-jobs-notifier.svg?branch=master)](https://travis-ci.org/Okipa/laravel-stuck-jobs-notifier)
+[![Build status](https://github.com/Okipa/laravel-stuck-jobs-notifier/workflows/CI/badge.svg)](https://github.com/Okipa/laravel-stuck-jobs-notifier/actions)
 [![Coverage Status](https://coveralls.io/repos/github/Okipa/laravel-stuck-jobs-notifier/badge.svg?branch=master)](https://coveralls.io/github/Okipa/laravel-stuck-jobs-notifier?branch=master)
 [![Quality Score](https://img.shields.io/scrutinizer/g/Okipa/laravel-stuck-jobs-notifier.svg?style=flat-square)](https://scrutinizer-ci.com/g/Okipa/laravel-stuck-jobs-notifier/?branch=master)
 
-Get notified and execute any PHP callback when some jobs are stuck in your `failed_jobs` table for a number of hours of your choice.
+Get notified and execute PHP callback when you have stuck jobs for a defined number of hours.
   
 Notifications can be sent by mail, Slack and webhooks (chats often provide a webhook API).
 

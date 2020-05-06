@@ -1,14 +1,8 @@
 # Changelog
 
-## [3.0.1](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/3.0.0...3.0.1)
-
-2020-04-05
-
-* Fixed default notification messages.
-
 ## [3.0.0](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/2.0.0...3.0.0)
 
-2020-04-05
+2020-04-06
 
 * Changed the name of the package.
 * Changed the command signature.

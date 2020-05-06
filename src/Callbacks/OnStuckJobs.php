@@ -1,21 +1,19 @@
 <?php
 
-namespace Okipa\LaravelStuckJobsNotifier;
+namespace Okipa\LaravelStuckJobsNotifier\Callbacks;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected;
 
-class Callback
+class OnStuckJobs
 {
     /**
-     * Callback constructor.
-     *
      * @param \Illuminate\Support\Collection $stuckJobs
      *
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected
      */
-    public function __construct(Collection $stuckJobs)
+    public function __invoke(Collection $stuckJobs)
     {
         $stuckJobsCount = $stuckJobs->count();
         throw new StuckJobsDetected($stuckJobsCount . ' stuck failed '

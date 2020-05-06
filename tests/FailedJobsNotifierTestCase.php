@@ -6,7 +6,7 @@ use Faker\Factory;
 use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifierServiceProvider;
 use Orchestra\Testbench\TestCase;
 
-abstract class BootstrapComponentsTestCase extends TestCase
+abstract class FailedJobsNotifierTestCase extends TestCase
 {
     protected $faker;
 

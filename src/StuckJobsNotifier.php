@@ -3,34 +3,34 @@
 namespace Okipa\LaravelStuckJobsNotifier;
 
 use Carbon\Carbon;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun;
-use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidCallback;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit;
-use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidNotification;
+use Okipa\LaravelStuckJobsNotifier\Notifications\JobsAreStuck;
 
 class StuckJobsNotifier
 {
     /**
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidCallback
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidNotification
+     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected
      */
     public function notify(): void
     {
         if ($this->isAllowedToRun()) {
             $stuckJobs = $this->getStuckFailedJobs();
             if ($stuckJobs->isNotEmpty()) {
-                $notifiable = app(config('stuck-jobs-notifier.notifiable'));
                 $notification = $this->getNotification($stuckJobs);
-                $notifiable->notify($notification);
-                $this->executeCallback($stuckJobs);
+                $this->getNotifiable()->notify($notification);
+                $callback = $this->getCallback();
+                if ($callback) {
+                    $callback($stuckJobs);
+                }
             }
         }
     }
@@ -47,7 +47,8 @@ class StuckJobsNotifier
         } elseif (is_bool($allowedToRun)) {
             return $allowedToRun;
         }
-        throw new InvalidAllowedToRun('The `allowed_to_run` config is not a boolean or a callable.');
+        throw new InvalidAllowedToRun('The `stuck-jobs-notifier.allowed_to_run` config is not a boolean or '
+            . 'a callable.');
     }
 
     /**
@@ -93,34 +94,26 @@ class StuckJobsNotifier
     {
         $hoursLimit = config('stuck-jobs-notifier.hours_limit');
         if (! is_int($hoursLimit)) {
-            throw new InvalidHoursLimit('The `hours_limit` config is not an integer.');
+            throw new InvalidHoursLimit('The `stuck-jobs-notifier.hours_limit` config is not an integer.');
         }
 
         return $hoursLimit;
     }
 
-    /**
-     * @param \Illuminate\Support\Collection $stuckJobs
-     *
-     * @return \Illuminate\Notifications\Notification
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidNotification
-     */
-    public function getNotification(Collection $stuckJobs): Notification
+    public function getNotification(Collection $stuckJobs): JobsAreStuck
     {
-        /** @var \Okipa\LaravelStuckJobsNotifier\Notification|mixed $notification */
-        $notification = app(config('stuck-jobs-notifier.notification'), ['stuckJobs' => $stuckJobs]);
-        if (! $notification instanceof Notification || ! is_subclass_of($notification, Notification::class)) {
-            throw new InvalidNotification('The `notification` config does not extend ' . Notification::class);
-        }
-
-        return $notification;
+        return app(config('stuck-jobs-notifier.notification'), ['stuckJobs' => $stuckJobs]);
     }
 
-    public function executeCallback(Collection $stuckJobs): void
+    public function getNotifiable(): Notifiable
+    {
+        return app(config('stuck-jobs-notifier.notifiable'));
+    }
+
+    public function getCallback(): ?OnStuckJobs
     {
         $callback = config('stuck-jobs-notifier.callback');
-        if ($callback) {
-            new $callback($stuckJobs);
-        }
+
+        return $callback ? app($callback) : null;
     }
 }

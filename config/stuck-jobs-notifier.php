@@ -10,23 +10,24 @@ return [
     'hours_limit' => 2,
 
     /*
-     * The notifiable to which the notification will be sent. The default
-     * notifiable will use the mail and slack configuration specified
-     * in this config file.
+     * The notifiable to which the notification will be sent.
+     * The default notifiable will use the mail, slack and webhook configuration specified in this config file.
+     * You may use your own notifiable but make sure it extends this one.
      */
     'notifiable' => Okipa\LaravelStuckJobsNotifier\Notifiable::class,
 
     /*
      * The notification that will be sent when stuck jobs are detected.
+     * You may use your own notification but make sure it extends this one.
      */
-    'notification' => Okipa\LaravelStuckJobsNotifier\Notification::class,
+    'notification' => Okipa\LaravelStuckJobsNotifier\Notifications\JobsAreStuck::class,
 
     /*
      * The callback that will be executed when stuck jobs are detected.
-     * Any class can be called here and will receive a $stuckJobs collection in its constructor.
+     * You may use your own callback but make sure it extends this one.
      * Can be set to null if you do not want any callback to be executed.
      */
-    'callback' => Okipa\LaravelStuckJobsNotifier\Callback::class,
+    'callback' => Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs::class,
 
     /*
     * You can pass a boolean or a callable to authorize or block the notification process.

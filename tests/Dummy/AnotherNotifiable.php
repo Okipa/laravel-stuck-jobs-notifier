@@ -2,29 +2,9 @@
 
 namespace Okipa\LaravelStuckJobsNotifier\Test\Dummy;
 
-use Illuminate\Notifications\Notifiable as NotifiableTrait;
+use Okipa\LaravelStuckJobsNotifier\Notifiable;
 
-class AnotherNotifiable
+class AnotherNotifiable extends Notifiable
 {
-    use NotifiableTrait;
-
-    public function routeNotificationForMail(): string
-    {
-        return 'john@example.com';
-    }
-
-    public function routeNotificationForSlack(): string
-    {
-        return '';
-    }
-
-    public function routeNotificationForWebhook(): string
-    {
-        return '';
-    }
-
-    public function getKey()
-    {
-        return 1;
-    }
+    //
 }
