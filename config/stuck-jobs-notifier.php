@@ -5,6 +5,12 @@ use NotificationChannels\Webhook\WebhookChannel;
 return [
 
     /*
+     * You can pass a boolean or a callable to authorize or block the notification process.
+     * If the boolean or the callable return false, no notification will be sent.
+     */
+    'allowed_to_run' => env('APP_ENV') !== 'local',
+
+    /*
      * The number of hours from which the failed jobs are considered as stuck.
      */
     'hours_limit' => 2,
@@ -28,12 +34,6 @@ return [
      * Can be set to null if you do not want any callback to be executed.
      */
     'callback' => Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs::class,
-
-    /*
-    * You can pass a boolean or a callable to authorize or block the notification process.
-    * If the boolean or the callable return false, no notification will be sent.
-    */
-    'allowed_to_run' => env('APP_ENV') !== 'local',
 
     /*
      * The channels to which the notification will be sent.
