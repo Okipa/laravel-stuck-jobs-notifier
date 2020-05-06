@@ -1,0 +1,70 @@
+{
+    "name": "okipa/laravel-stuck-jobs-notifier",
+    "description": "Get notified when stuck jobs are detected.",
+    "keywords": [
+        "okipa",
+        "package",
+        "php",
+        "laravel",
+        "queue",
+        "failed",
+        "stuck",
+        "job",
+        "jobs",
+        "notify",
+        "notifier",
+        "laravel-stuck-jobs-notifier"
+    ],
+    "homepage": "https://github.com/Okipa/laravel-stuck-jobs-notifier",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arthur LORENT",
+            "email": "arthur.lorent@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "illuminate/support": "^6.0||^7.0",
+        "laravel-notification-channels/webhook": "^2.0",
+        "laravel/slack-notification-channel": "^2.0"
+    },
+    "require-dev": {
+        "nunomaduro/larastan": "^0.5",
+        "orchestra/testbench": "^4.0||^5.0",
+        "phpmd/phpmd": "^2.8",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Okipa\\LaravelStuckJobsNotifier\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Okipa\\LaravelStuckJobsNotifier\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpcbf",
+            "vendor/bin/phpcs",
+            "vendor/bin/phpmd config,src text phpmd.xml",
+            "vendor/bin/phpstan analyse --memory-limit=-1",
+            "vendor/bin/phpunit"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Okipa\\LaravelStuckJobsNotifier\\StuckJobsNotifierServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
