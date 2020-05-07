@@ -43,7 +43,7 @@ class JobsAreStuck extends IlluminateNotification
     {
         return (new MailMessage)->level('error')
             ->subject(trans_choice(
-                '{1}:app - :env: :count job is stuck in queue|[2,*]:app - :env: :count jobs are stuck in queue',
+                '{1}[:app - :env] :count job is stuck in queue|[2,*][:app - :env] :count jobs are stuck in queue',
                 $this->stuckJobsCount,
                 [
                     'app' => config('app.name'),

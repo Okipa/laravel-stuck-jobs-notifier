@@ -181,7 +181,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
                 // mail
                 $mailData = $notification->toMail($channels)->toArray();
                 $this->assertEquals('error', $mailData['level']);
-                $this->assertEquals('Laravel - testing: 1 job is stuck in queue', $mailData['subject']);
+                $this->assertEquals('[Laravel - testing] 1 job is stuck in queue', $mailData['subject']);
                 $this->assertEquals(
                     'We have detected that 1 job is stuck in the [Laravel - testing](http://localhost) queue '
                     . 'since the ' . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
@@ -231,7 +231,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
                 // mail
                 $mailData = $notification->toMail($channels)->toArray();
                 $this->assertEquals('error', $mailData['level']);
-                $this->assertEquals('Laravel - testing: 2 jobs are stuck in queue', $mailData['subject']);
+                $this->assertEquals('[Laravel - testing] 2 jobs are stuck in queue', $mailData['subject']);
                 $this->assertEquals(
                     'We have detected that 2 jobs are stuck in the [Laravel - testing](http://localhost) queue '
                     . 'since the ' . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',

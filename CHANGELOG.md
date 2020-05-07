@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/1.0.1...1.0.2)
+
+2020-04-07
+
+* Improved notification mail message.
+
 ## [1.0.1](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/1.0.0...1.0.1)
 
 2020-04-07
