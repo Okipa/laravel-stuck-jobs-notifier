@@ -1,4 +1,4 @@
-# Upgrade from v2 to v3
+# Upgrade from [okipa/failed-job-notifier](https://github.com/Okipa/laravel-failed-jobs-notifier)
 
 The v3 embeds some breaking changes.
 
