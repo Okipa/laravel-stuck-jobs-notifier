@@ -1,7 +1,5 @@
 # Upgrade from [okipa/failed-job-notifier](https://github.com/Okipa/laravel-failed-jobs-notifier)
 
-The v3 embeds some breaking changes.
-
 Follow the steps below to upgrade the package.
 
 ## Package name change
