@@ -15,10 +15,13 @@ class JobsAreStuck extends IlluminateNotification
 
     protected int $stuckJobsCount;
 
+    protected Carbon $stuckSince;
+
     public function __construct(Collection $stuckJobs)
     {
         $this->stuckJobs = $stuckJobs;
         $this->stuckJobsCount = $stuckJobs->count();
+        $this->stuckSince = Carbon::parse($this->stuckJobs->min('failed_at'));
     }
 
     /**
@@ -49,19 +52,21 @@ class JobsAreStuck extends IlluminateNotification
                 ]
             ))
             ->line(trans_choice(
-                '{1}We have detected that :count job is stuck in [:app - :env](:url) queue since :date.'
-                . '|[2,*]We have detected that :count jobs are stuck in [:app - :env](:url) queue since :date.',
+                '{1}We have detected that :count job is stuck in the [:app - :env](:url) queue since the :day at :hour.'
+                . '|[2,*]We have detected that :count jobs are stuck in the [:app - :env](:url) queue '
+                . 'since the :day at :hour.',
                 $this->stuckJobsCount,
                 [
                     'count' => $this->stuckJobsCount,
-                    'date' => Carbon::parse($this->stuckJobs->min('failed_at'))->format('d/m/Y - H:i:s'),
                     'app' => config('app.name'),
                     'env' => config('app.env'),
                     'url' => config('app.url'),
+                    'day' => $this->stuckSince->format('d/m/Y'),
+                    'hour' => $this->stuckSince->format('H:i:s'),
                 ]
             ))
             ->line('Please check your stuck jobs connecting to your server and executing the '
-                . '« php artisan queue:failed » command.');
+                . '"php artisan queue:failed" command.');
     }
 
     /**
@@ -72,16 +77,17 @@ class JobsAreStuck extends IlluminateNotification
     public function toSlack(): SlackMessage
     {
         return (new SlackMessage)->error()->content('⚠ ' . trans_choice(
-            '{1}`:app - :env` :count job job is stuck in :url queue since :date.'
-                . '|[2,*]`:app - :env` :count jobs are stuck in :url queue since :date.',
+            '{1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.'
+                . '|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.',
             $this->stuckJobsCount,
             [
-                    'app' => config('app.name'),
-                    'env' => config('app.env'),
-                    'count' => $this->stuckJobsCount,
-                    'url' => config('app.url'),
-                    'date' => Carbon::parse($this->stuckJobs->min('failed_at'))->format('d/m/Y - H:i:s'),
-                ]
+                'app' => config('app.name'),
+                'env' => config('app.env'),
+                'count' => $this->stuckJobsCount,
+                'url' => config('app.url'),
+                'day' => $this->stuckSince->format('d/m/Y'),
+                'hour' => $this->stuckSince->format('H:i:s'),
+            ]
         ));
     }
 
@@ -95,16 +101,17 @@ class JobsAreStuck extends IlluminateNotification
         // rocket chat webhook example
         return WebhookMessage::create()->data([
             'text' => '⚠ ' . trans_choice(
-                '{1}`:app - :env` :count job job is stuck in :url queue since :date.'
-                    . '|[2,*]`:app - :env` :count jobs are stuck in :url queue since :date.',
+                '{1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.'
+                    . '|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.',
                 $this->stuckJobsCount,
                 [
-                        'app' => config('app.name'),
-                        'env' => config('app.env'),
-                        'count' => $this->stuckJobsCount,
-                        'url' => config('app.url'),
-                        'date' => Carbon::parse($this->stuckJobs->min('failed_at'))->format('d/m/Y - H:i:s'),
-                    ]
+                    'app' => config('app.name'),
+                    'env' => config('app.env'),
+                    'count' => $this->stuckJobsCount,
+                    'url' => config('app.url'),
+                    'day' => $this->stuckSince->format('d/m/Y'),
+                    'hour' => $this->stuckSince->format('H:i:s'),
+                ]
             ),
         ])->header('Content-Type', 'application/json');
     }
