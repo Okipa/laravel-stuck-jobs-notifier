@@ -5,11 +5,11 @@ namespace Okipa\LaravelStuckJobsNotifier\Notifications;
 use Carbon\Carbon;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification as IlluminateNotification;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use NotificationChannels\Webhook\WebhookMessage;
 
-class JobsAreStuck extends IlluminateNotification
+class JobsAreStuck extends Notification
 {
     protected Collection $stuckJobs;
 
