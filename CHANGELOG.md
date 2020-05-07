@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.1](https://github.com/Okipa/laravel-stuck-jobs-notifier/releases/tag/1.0.1)
+## [1.0.1](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/1.0.0...1.0.1)
 
 2020-04-07
 
