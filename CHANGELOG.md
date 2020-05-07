@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Okipa/laravel-stuck-jobs-notifier/releases/tag/1.0.1)
+
+2020-04-07
+
+* Improved notification message.
+* Improved testing coverage.
+
 ## [1.0.0](https://github.com/Okipa/laravel-stuck-jobs-notifier/releases/tag/1.0.0)
 
 2020-04-06
