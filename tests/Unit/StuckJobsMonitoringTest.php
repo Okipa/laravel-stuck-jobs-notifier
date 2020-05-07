@@ -163,4 +163,128 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         $this->expectException(StuckJobsDetected::class);
         $this->artisan('queue:stuck:notify')->assertExitCode(0);
     }
+
+    public function testDefaultProcessesAreDownNotificationSingularMessage()
+    {
+        $date = Carbon::now()->subHours(4);
+        $stuckJobs = collect([
+            ['failed_at' => $date->toDateTimeString()],
+        ]);
+        $notification = (new StuckJobsNotifier)->getNotification($stuckJobs);
+        $notifiable = (new StuckJobsNotifier)->getNotifiable();
+        $notifiable->notify($notification);
+        NotificationFacade::assertSentTo(
+            new Notifiable(),
+            JobsAreStuck::class,
+            function ($notification, $channels) use ($date) {
+                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
+                // mail
+                $mailData = $notification->toMail($channels)->toArray();
+                $this->assertEquals('error', $mailData['level']);
+                $this->assertEquals('Laravel - testing: 1 job is stuck in queue', $mailData['subject']);
+                $this->assertEquals(
+                    'We have detected that 1 job is stuck in the [Laravel - testing](http://localhost) queue '
+                    . 'since the ' . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
+                    $mailData['introLines'][0]
+                );
+                $this->assertEquals(
+                    'Please check your stuck jobs connecting to your server and executing the '
+                    . '"php artisan queue:failed" command.',
+                    $mailData['introLines'][1]
+                );
+                // slack
+                $slackData = $notification->toSlack($channels);
+                $this->assertEquals('error', $slackData->level);
+                $this->assertEquals(
+                    '⚠ `[Laravel - testing]` 1 job is stuck in the http://localhost queue since the '
+                    . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
+                    $slackData->content
+                );
+                // webhook
+                $webhookData = $notification->toWebhook($channels)->toArray();
+                $this->assertEquals(
+                    '⚠ `[Laravel - testing]` 1 job is stuck in the http://localhost queue since the '
+                    . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
+                    $webhookData['data']['text']
+                );
+
+                return true;
+            }
+        );
+    }
+
+    public function testDefaultProcessesAreDownNotificationPluralMessage()
+    {
+        $date = Carbon::now()->subHours(4);
+        $stuckJobs = collect([
+            ['failed_at' => $date->toDateTimeString()],
+            ['failed_at' => $date->copy()->addHour()->toDateTimeString()],
+        ]);
+        $notification = (new StuckJobsNotifier)->getNotification($stuckJobs);
+        $notifiable = (new StuckJobsNotifier)->getNotifiable();
+        $notifiable->notify($notification);
+        NotificationFacade::assertSentTo(
+            new Notifiable(),
+            JobsAreStuck::class,
+            function ($notification, $channels) use ($date) {
+                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
+                // mail
+                $mailData = $notification->toMail($channels)->toArray();
+                $this->assertEquals('error', $mailData['level']);
+                $this->assertEquals('Laravel - testing: 2 jobs are stuck in queue', $mailData['subject']);
+                $this->assertEquals(
+                    'We have detected that 2 jobs are stuck in the [Laravel - testing](http://localhost) queue '
+                    . 'since the ' . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
+                    $mailData['introLines'][0]
+                );
+                $this->assertEquals(
+                    'Please check your stuck jobs connecting to your server and executing the '
+                    . '"php artisan queue:failed" command.',
+                    $mailData['introLines'][1]
+                );
+                // slack
+                $slackData = $notification->toSlack($channels);
+                $this->assertEquals('error', $slackData->level);
+                $this->assertEquals(
+                    '⚠ `[Laravel - testing]` 2 jobs are stuck in the http://localhost queue since the '
+                    . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
+                    $slackData->content
+                );
+                // webhook
+                $webhookData = $notification->toWebhook($channels)->toArray();
+                $this->assertEquals(
+                    '⚠ `[Laravel - testing]` 2 jobs are stuck in the http://localhost queue since the '
+                    . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
+                    $webhookData['data']['text']
+                );
+
+                return true;
+            }
+        );
+    }
+
+    public function testDefaultDownProcessesCallbackExceptionSingularMessage()
+    {
+        $date = Carbon::now()->subHours(4);
+        $stuckJobs = collect([
+            ['failed_at' => $date->toDateTimeString()],
+        ]);
+        $callback = (new StuckJobsNotifier)->getCallback();
+        $this->expectExceptionMessage('1 job is stuck in queue since the '
+            . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.');
+        $callback($stuckJobs);
+    }
+
+    public function testDefaultDownProcessesCallbackExceptionPluralMessage()
+    {
+        $date = Carbon::now()->subHours(4);
+        $stuckJobs = collect([
+            ['failed_at' => $date->toDateTimeString()],
+            ['failed_at' => $date->copy()->addHour()->toDateTimeString()],
+        ]);
+        $callback = (new StuckJobsNotifier)->getCallback();
+        $this->expectExceptionMessage('2 jobs are stuck in queue since the '
+            . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.');
+        $callback($stuckJobs);
+    }
 }
