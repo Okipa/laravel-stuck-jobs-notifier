@@ -40,6 +40,12 @@ Install the package with composer:
 composer require "okipa/laravel-stuck-jobs-notifier:^1.0"
 ```
 
+In case you want to use `Slack` notifications you'll also have to install:
+
+```bash
+composer require guzzlehttp/guzzle
+```
+
 ## Configuration
   
 Publish the package configuration: 
