@@ -16,6 +16,7 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 
 | Laravel version | PHP version | Package version |
 |---|---|---|
+| ^7.0 | ^7.4 | ^1.1 |
 | ^6.0 | ^7.4 | ^1.0 |
 
 ## Upgrade guide
