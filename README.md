@@ -44,7 +44,13 @@ composer require "okipa/laravel-stuck-jobs-notifier:^1.0"
 In case you want to use `Slack` notifications you'll also have to install:
 
 ```bash
-composer require guzzlehttp/guzzle
+composer require guzzlehttp/guzzle laravel/slack-notification-channel
+```
+
+In case you want to use `webhook` notifications you'll also have to install:
+
+```bash
+composer require laravel-notification-channels/webhook
 ```
 
 ## Configuration
