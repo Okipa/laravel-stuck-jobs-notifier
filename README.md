@@ -59,7 +59,7 @@ php artisan vendor:publish --tag=stuck-jobs-notifier:config
 
 All words and sentences used in this package are translatable.
 
-See how to translate them on the Laravel official documentation : https://laravel.com/docs/localization#using-translation-strings-as-keys.
+See how to translate them on the Laravel official documentation: https://laravel.com/docs/localization#using-translation-strings-as-keys.
 
 Here is the list of the words and sentences available for translation by default:
 
@@ -73,13 +73,15 @@ Here is the list of the words and sentences available for translation by default
 
 ## Usage
 
-Just add this command in the `schedule()` method of your `\App\Console\Kernel` class :
+Just add this command in the `schedule()` method of your `\App\Console\Kernel` class:
 
 ```php
 $schedule->command('queue:stuck:notify')->twiceDaily(10, 16);
 ```
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
+
+To check if everything is in order, you can execute the following command to simulate the stuck jobs detection process:
 
 ## Testing
 
