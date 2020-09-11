@@ -16,8 +16,7 @@ class StuckJobsNotifierServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->commands([NotifyStuckJobs::class]);
-            $this->commands([SimulateStuckJobs::class]);
+            $this->commands([NotifyStuckJobs::class, SimulateStuckJobs::class]);
         }
         $this->publishes([
             __DIR__ . '/../config/stuck-jobs-notifier.php' => config_path('stuck-jobs-notifier.php'),
