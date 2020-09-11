@@ -45,7 +45,8 @@ class JobsAreStuck extends Notification
     public function toMail(): MailMessage
     {
         return (new MailMessage)->level('error')
-            ->subject(($this->isTesting ? __('Notification test') . ' : ' : '') . trans_choice(
+            ->subject(($this->isTesting ? __('Notification test:') . ' ' : '')
+                . trans_choice(
                     '{1}[:app - :env] :count job is stuck in queue|[2,*][:app - :env] :count jobs are stuck in queue',
                     $this->stuckJobsCount,
                     [
@@ -54,8 +55,10 @@ class JobsAreStuck extends Notification
                         'count' => $this->stuckJobsCount,
                     ]
                 ))
-            ->line(($this->isTesting ? __('Notification test') . ' : ' : '') . trans_choice(
-                    '{1}We have detected that :count job is stuck in the [:app - :env](:url) queue since the :day at :hour.'
+            ->line(($this->isTesting ? __('Notification test:') . ' ' : '')
+                . trans_choice(
+                    '{1}We have detected that :count job is stuck in the [:app - :env](:url) queue '
+                    . 'since the :day at :hour.'
                     . '|[2,*]We have detected that :count jobs are stuck in the [:app - :env](:url) queue '
                     . 'since the :day at :hour.',
                     $this->stuckJobsCount,
@@ -80,7 +83,7 @@ class JobsAreStuck extends Notification
     public function toSlack(): SlackMessage
     {
         return (new SlackMessage)->error()->content('⚠ '
-            . ($this->isTesting ? __('Notification test') . ' : ' : '')
+            . ($this->isTesting ? __('Notification test:') . ' ' : '')
             . trans_choice(
                 '{1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.'
                 . '|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.',
@@ -106,7 +109,7 @@ class JobsAreStuck extends Notification
         // rocket chat webhook example
         return WebhookMessage::create()->data([
             'text' => '⚠ '
-                . ($this->isTesting ? __('Notification test') . ': ' : '')
+                . ($this->isTesting ? __('Notification test:') . ' ' : '')
                 . trans_choice(
                     '{1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.'
                     . '|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.',

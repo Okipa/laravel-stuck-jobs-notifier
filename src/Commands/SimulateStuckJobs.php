@@ -22,6 +22,7 @@ class SimulateStuckJobs extends Command
      */
     protected $description = 'Simulate stuck jobs detection for testing purpose.';
 
+    /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected */
     public function handle(): void
     {
         $fakeStuckJobs = collect([
@@ -32,7 +33,7 @@ class SimulateStuckJobs extends Command
         (new StuckJobsNotifier)->getNotifiable()->notify($notification);
         $callback = (new StuckJobsNotifier)->getCallback();
         if ($callback) {
-            $callback($fakeStuckJobs);
+            $callback($fakeStuckJobs, true);
         }
     }
 }

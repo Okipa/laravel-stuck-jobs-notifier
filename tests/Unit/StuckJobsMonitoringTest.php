@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Schema;
-use Okipa\LaravelStuckJobsNotifier\Commands\SimulateStuckJobs;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit;
@@ -264,30 +263,6 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testTestingNotificationCommand()
-    {
-        $this->artisan(SimulateStuckJobs::class);
-        NotificationFacade::assertSentTo(
-            new Notifiable(),
-            JobsAreStuck::class,
-            function ($notification, $channels) {
-                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
-                // mail
-                $mailData = $notification->toMail($channels)->toArray();
-                $this->assertStringContainsString('Notification test: ', $mailData['subject']);
-                $this->assertStringContainsString('Notification test: ', $mailData['introLines'][0]);
-                // slack
-                $slackData = $notification->toSlack($channels);
-                $this->assertStringContainsString('Notification test: ', $slackData->content);
-                // webhook
-                $webhookData = $notification->toWebhook($channels)->toArray();
-                $this->assertStringContainsString('Notification test: ', $webhookData['data']['text']);
-
-                return true;
-            }
-        );
-    }
-
     public function testDefaultDownProcessesCallbackExceptionSingularMessage()
     {
         $date = Carbon::now()->subHours(4);
@@ -311,5 +286,36 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         $this->expectExceptionMessage('2 jobs are stuck in queue since the '
             . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.');
         $callback($stuckJobs);
+    }
+
+    public function testSimulationNotification()
+    {
+        config()->set('stuck-jobs-notifier.callback', null);
+        $this->artisan('queue:stuck:simulate');
+        NotificationFacade::assertSentTo(
+            new Notifiable(),
+            JobsAreStuck::class,
+            function ($notification, $channels) {
+                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
+                // mail
+                $mailData = $notification->toMail($channels)->toArray();
+                $this->assertStringContainsString('Notification test: ', $mailData['subject']);
+                $this->assertStringContainsString('Notification test: ', $mailData['introLines'][0]);
+                // slack
+                $slackData = $notification->toSlack($channels);
+                $this->assertStringContainsString('Notification test: ', $slackData->content);
+                // webhook
+                $webhookData = $notification->toWebhook($channels)->toArray();
+                $this->assertStringContainsString('Notification test: ', $webhookData['data']['text']);
+
+                return true;
+            }
+        );
+    }
+
+    public function testSimulationCallback()
+    {
+        $this->expectExceptionMessage('Notification test: ');
+        $this->artisan('queue:stuck:simulate');
     }
 }
