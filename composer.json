@@ -56,7 +56,7 @@
         ]
     },
     "suggest" : {
-        "guzzlehttp/guzzle" : "Allows notifications to be sent to Slack",
+        "guzzlehttp/guzzle" : "Required for sending notifications via Slack",
         "laravel/slack-notification-channel" : "Required for sending notifications via Slack",
         "laravel-notification-channels/webhook" : "Required for sending notifications via Webhook"
     },

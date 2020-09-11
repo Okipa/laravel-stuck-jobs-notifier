@@ -25,6 +25,7 @@ class NotifyStuckJobs extends Command
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun
+     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected
      */
     public function handle(): void
     {

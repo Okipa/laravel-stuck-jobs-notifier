@@ -3,6 +3,7 @@
 namespace Okipa\LaravelStuckJobsNotifier\Test;
 
 use Faker\Factory;
+use Illuminate\Foundation\Application;
 use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifierServiceProvider;
 use Orchestra\Testbench\TestCase;
 
@@ -17,7 +18,7 @@ abstract class FailedJobsNotifierTestCase extends TestCase
      *
      * @return void
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('queue.default', 'sync');
         $app['config']->set('database.default', 'testing');
@@ -31,11 +32,9 @@ abstract class FailedJobsNotifierTestCase extends TestCase
     /**
      * Get package providers.
      *
-     * @param \Illuminate\Foundation\Application $app
-     *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [StuckJobsNotifierServiceProvider::class];
     }
