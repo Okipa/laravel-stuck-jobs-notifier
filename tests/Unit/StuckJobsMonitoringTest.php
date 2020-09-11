@@ -315,7 +315,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
 
     public function testSimulationCallback()
     {
-        $this->expectExceptionMessage('Notification test: ');
+        $this->expectExceptionMessage('Exception test: ');
         $this->artisan('queue:stuck:simulate');
     }
 }
