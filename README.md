@@ -40,7 +40,7 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 Install the package with composer:
 
 ```bash
-composer require "okipa/laravel-stuck-jobs-notifier:^1.0"
+composer require "okipa/laravel-stuck-jobs-notifier:^2.0"
 ```
 
 If you intend to send `Slack` notifications you will have to install:
