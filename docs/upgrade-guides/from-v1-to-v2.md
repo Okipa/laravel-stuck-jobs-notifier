@@ -10,7 +10,7 @@ The following dependencies are not installed by default anymore:
 
 This allows you to avoid useless dependencies installation if you do not want to send Slack and webhook notifications.
 
-In the opposite, if you intend to send Slack or webhook notifications, install the related dependencies by following the [installation](../../README.md#installation) instructions.
+In the opposite, if you intend to send Slack and/or webhook notifications, install the required dependencies by following the [installation](../../README.md#installation) instructions.
 
 ## See all changes
 
