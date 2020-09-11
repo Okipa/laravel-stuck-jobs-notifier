@@ -102,25 +102,18 @@ class StuckJobsNotifier
 
     public function getNotification(Collection $stuckJobs, bool $isTesting = false): JobsAreStuck
     {
-        /** @var \Okipa\LaravelStuckJobsNotifier\Notifications\JobsAreStuck $notification */
-        $notification = app(config('stuck-jobs-notifier.notification'), compact('stuckJobs', 'isTesting'));
-
-        return $notification;
+        return app(config('stuck-jobs-notifier.notification'), compact('stuckJobs', 'isTesting'));
     }
 
     public function getNotifiable(): Notifiable
     {
-        /** @var \Okipa\LaravelStuckJobsNotifier\Notifiable $notifiable */
-        $notifiable = app(config('stuck-jobs-notifier.notifiable'));
-
-        return $notifiable;
+        return app(config('stuck-jobs-notifier.notifiable'));
     }
 
     public function getCallback(): ?OnStuckJobs
     {
-        /** @var \Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs|null $callback */
-        $callback = config('stuck-jobs-notifier.callback') ? app(config('stuck-jobs-notifier.callback')) : null;
+        $callback = config('stuck-jobs-notifier.callback');
 
-        return $callback;
+        return $callback ? app($callback) : null;
     }
 }
