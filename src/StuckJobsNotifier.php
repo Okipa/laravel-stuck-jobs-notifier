@@ -110,13 +110,17 @@ class StuckJobsNotifier
 
     public function getNotifiable(): Notifiable
     {
-        return app(config('stuck-jobs-notifier.notifiable'));
+        /** @var \Okipa\LaravelStuckJobsNotifier\Notifiable $notifiable */
+        $notifiable = app(config('stuck-jobs-notifier.notifiable'));
+
+        return $notifiable;
     }
 
     public function getCallback(): ?OnStuckJobs
     {
-        $callback = config('stuck-jobs-notifier.callback');
+        /** @var \Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs|null $callback */
+        $callback = $callback ? app(config('stuck-jobs-notifier.callback')) : null;
 
-        return $callback ? app($callback) : null;
+        return $callback;
     }
 }

@@ -10,17 +10,26 @@ class Notifiable
 
     public function routeNotificationForMail(): string
     {
-        return config('stuck-jobs-notifier.mail.to');
+        /** @var string $email */
+        $email = config('stuck-jobs-notifier.mail.to');
+
+        return $email;
     }
 
     public function routeNotificationForSlack(): string
     {
-        return config('stuck-jobs-notifier.slack.webhookUrl');
+        /** @var string $webhookUrl */
+        $webhookUrl = config('stuck-jobs-notifier.slack.webhookUrl');
+
+        return $webhookUrl;
     }
 
     public function routeNotificationForWebhook(): string
     {
-        return config('stuck-jobs-notifier.webhook.url');
+        /** @var string $webhookUrl */
+        $webhookUrl = config('stuck-jobs-notifier.webhook.url');
+
+        return $webhookUrl;
     }
 
     public function getKey(): int
