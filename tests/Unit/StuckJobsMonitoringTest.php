@@ -297,7 +297,6 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
             new Notifiable(),
             JobsAreStuck::class,
             function ($notification, $channels) {
-                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
                 // mail
                 $mailData = $notification->toMail($channels)->toArray();
                 $this->assertStringContainsString('Notification test: ', $mailData['subject']);
