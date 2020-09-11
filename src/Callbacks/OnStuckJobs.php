@@ -19,8 +19,8 @@ class OnStuckJobs
         $stuckJobsCount = $stuckJobs->count();
         $stuckSince = Carbon::parse($stuckJobs->min('failed_at'));
         // triggers an exception to make your monitoring tool (Sentry, ...) aware of the problem.
-        throw new StuckJobsDetected(($isTesting ? __('Notification test:') . ' ' : '')
-            . trans_choice(
+        throw new StuckJobsDetected(($isTesting ? (string) __('Notification test:') . ' ' : '')
+            . (string) trans_choice(
                 '{1}:count job is stuck in queue since the :day at :hour.'
                 . '|[2,*]:count jobs are stuck in queue since the :day at :hour.',
                 $stuckJobsCount,

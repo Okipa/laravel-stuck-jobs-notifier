@@ -102,7 +102,10 @@ class StuckJobsNotifier
 
     public function getNotification(Collection $stuckJobs, bool $isTesting = false): JobsAreStuck
     {
-        return app(config('stuck-jobs-notifier.notification'), compact('stuckJobs', 'isTesting'));
+        /** @var \Okipa\LaravelStuckJobsNotifier\Notifications\JobsAreStuck $notification */
+        $notification = app(config('stuck-jobs-notifier.notification'), compact('stuckJobs', 'isTesting'));
+        
+        return $notification;
     }
 
     public function getNotifiable(): Notifiable
