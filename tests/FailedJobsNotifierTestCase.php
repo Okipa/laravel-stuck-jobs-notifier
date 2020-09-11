@@ -31,11 +31,9 @@ abstract class FailedJobsNotifierTestCase extends TestCase
     /**
      * Get package providers.
      *
-     * @param \Illuminate\Foundation\Application $app
-     *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders(): array
     {
         return [StuckJobsNotifierServiceProvider::class];
     }

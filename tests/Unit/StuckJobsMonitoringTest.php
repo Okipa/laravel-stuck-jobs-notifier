@@ -287,4 +287,35 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
             . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.');
         $callback($stuckJobs);
     }
+
+    public function testSimulationNotification()
+    {
+        config()->set('stuck-jobs-notifier.callback', null);
+        $this->artisan('queue:stuck:simulate');
+        NotificationFacade::assertSentTo(
+            new Notifiable(),
+            JobsAreStuck::class,
+            function ($notification, $channels) {
+                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
+                // mail
+                $mailData = $notification->toMail($channels)->toArray();
+                $this->assertStringContainsString('Notification test: ', $mailData['subject']);
+                $this->assertStringContainsString('Notification test: ', $mailData['introLines'][0]);
+                // slack
+                $slackData = $notification->toSlack($channels);
+                $this->assertStringContainsString('Notification test: ', $slackData->content);
+                // webhook
+                $webhookData = $notification->toWebhook($channels)->toArray();
+                $this->assertStringContainsString('Notification test: ', $webhookData['data']['text']);
+
+                return true;
+            }
+        );
+    }
+
+    public function testSimulationCallback()
+    {
+        $this->expectExceptionMessage('Notification test: ');
+        $this->artisan('queue:stuck:simulate');
+    }
 }

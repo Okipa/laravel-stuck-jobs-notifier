@@ -23,14 +23,15 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 * [From okipa/failed-jobs-notifier](/docs/upgrade-guides/from-failed-job-notifier.md)
 
 ## Table of Contents
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Testing](#testing)
-- [Changelog](#changelog)
-- [Contributing](#contributing)
-- [Credits](#credits)
-- [Licence](#license)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Translations](#translations)
+* [Usage](#usage)
+* [Testing](#testing)
+* [Changelog](#changelog)
+* [Contributing](#contributing)
+* [Credits](#credits)
+* [Licence](#license)
 
 ## Installation
 
@@ -54,15 +55,37 @@ Publish the package configuration:
 php artisan vendor:publish --tag=stuck-jobs-notifier:config
 ```
 
+## Translations
+
+All words and sentences used in this package are translatable.
+
+See how to translate them on the Laravel official documentation: https://laravel.com/docs/localization#using-translation-strings-as-keys.
+
+Here is the list of the words and sentences available for translation by default:
+
+```text
+* {1}[:app - :env] :count job is stuck in queue|[2,*][:app - :env] :count jobs are stuck in queue
+* {1}We have detected that :count job is stuck in the [:app - :env](:url) queue since the :day at :hour.|\[2,*\]We have detected that :count jobs are stuck in the [:app - :env](:url) queue since the :day at :hour.'
+* Please check your stuck jobs connecting to your server and executing the "php artisan queue:failed" command.
+* {1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.
+* Notification test:
+```
+
 ## Usage
 
-Just add this command in the `schedule()` method of your `\App\Console\Kernel` class :
+Just add this command in the `schedule()` method of your `\App\Console\Kernel` class:
 
 ```php
 $schedule->command('queue:stuck:notify')->twiceDaily(10, 16);
 ```
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
+
+To check if everything is correctly configured, you can simulate stuck jobs detection:
+
+```bash
+php artisan queue:stuck:simulate
+```
 
 ## Testing
 
@@ -80,8 +103,8 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
-- [Arthur LORENT](https://github.com/okipa)
-- [All Contributors](../../contributors)
+* [Arthur LORENT](https://github.com/okipa)
+* [All Contributors](../../contributors)
 
 ## License
 
