@@ -119,7 +119,7 @@ class StuckJobsNotifier
     public function getCallback(): ?OnStuckJobs
     {
         /** @var \Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs|null $callback */
-        $callback = $callback ? app(config('stuck-jobs-notifier.callback')) : null;
+        $callback = config('stuck-jobs-notifier.callback') ? app(config('stuck-jobs-notifier.callback')) : null;
 
         return $callback;
     }
