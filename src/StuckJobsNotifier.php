@@ -100,9 +100,9 @@ class StuckJobsNotifier
         return $hoursLimit;
     }
 
-    public function getNotification(Collection $stuckJobs): JobsAreStuck
+    public function getNotification(Collection $stuckJobs, bool $isTesting = false): JobsAreStuck
     {
-        return app(config('stuck-jobs-notifier.notification'), ['stuckJobs' => $stuckJobs]);
+        return app(config('stuck-jobs-notifier.notification'), compact('stuckJobs', 'isTesting'));
     }
 
     public function getNotifiable(): Notifiable
