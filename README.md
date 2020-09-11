@@ -21,8 +21,8 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 
 ## Upgrade guide
 
-* [From okipa/failed-jobs-notifier](/docs/upgrade-guides/from-failed-job-notifier.md)
 * [From v1 to V2](/docs/upgrade-guides/from-v1-to-v2.md)
+* [From okipa/failed-jobs-notifier](/docs/upgrade-guides/from-failed-job-notifier.md)
 
 ## Table of Contents
 * [Installation](#installation)
