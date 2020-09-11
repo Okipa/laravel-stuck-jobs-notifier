@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/1.0.2...1.1.0)
+
+2020-09-11
+
+* Added the `queue:stuck:simulate` command to simulate stuck jobs detection and check if everything is correctly configured.
+
 ## [1.0.2](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/1.0.1...1.0.2)
 
 2020-04-07

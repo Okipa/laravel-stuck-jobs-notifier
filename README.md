@@ -81,7 +81,7 @@ $schedule->command('queue:stuck:notify')->twiceDaily(10, 16);
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
 
-To check if everything is correctly configured, you can execute the following command to simulate and test the stuck jobs detection process:
+To check if everything is correctly configured, you can simulate stuck jobs detection:
 
 ```bash
 php artisan queue:stuck:simulate
