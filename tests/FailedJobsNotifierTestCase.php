@@ -3,7 +3,6 @@
 namespace Okipa\LaravelStuckJobsNotifier\Test;
 
 use Faker\Factory;
-use Illuminate\Foundation\Application;
 use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifierServiceProvider;
 use Orchestra\Testbench\TestCase;
 
@@ -23,9 +22,9 @@ abstract class FailedJobsNotifierTestCase extends TestCase
         $app['config']->set('queue.default', 'sync');
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 

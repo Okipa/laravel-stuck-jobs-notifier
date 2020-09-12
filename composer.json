@@ -55,10 +55,10 @@
             "vendor/bin/phpunit"
         ]
     },
-    "suggest" : {
-        "guzzlehttp/guzzle" : "Required for sending notifications via Slack",
-        "laravel/slack-notification-channel" : "Required for sending notifications via Slack",
-        "laravel-notification-channels/webhook" : "Required for sending notifications via Webhook"
+    "suggest": {
+        "guzzlehttp/guzzle": "Required for sending notifications via Slack",
+        "laravel/slack-notification-channel": "Required for sending notifications via Slack",
+        "laravel-notification-channels/webhook": "Required for sending notifications via Webhook"
     },
     "extra": {
         "laravel": {
