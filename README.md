@@ -77,9 +77,10 @@ Here is the list of the words and sentences available for translation by default
 
 ```text
 * {1}[:app - :env] :count job is stuck in queue|[2,*][:app - :env] :count jobs are stuck in queue
-* {1}We have detected that :count job is stuck in the [:app - :env](:url) queue since the :day at :hour.|\[2,*\]We have detected that :count jobs are stuck in the [:app - :env](:url) queue since the :day at :hour.'
+* {1}We have detected that :count job is stuck in the [:app - :env](:url) queue since the :day at :hour.|[2,*]We have detected that :count jobs are stuck in the [:app - :env](:url) queue since the :day at :hour.
 * Please check your stuck jobs connecting to your server and executing the "php artisan queue:failed" command.
 * {1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.
+* {1}:count job is stuck in queue since the :day at :hour.|[2,*]:count jobs are stuck in queue since the :day at :hour.
 * Notification test:
 * Exception test:
 ```
