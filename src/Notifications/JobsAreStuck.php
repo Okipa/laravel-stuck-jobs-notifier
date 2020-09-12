@@ -71,8 +71,8 @@ class JobsAreStuck extends Notification
                         'hour' => $this->stuckSince->format('H:i:s'),
                     ]
                 ))
-            ->line('Please check your stuck jobs connecting to your server and executing the '
-                . '"php artisan queue:failed" command.');
+            ->line((string) __('Please check your stuck jobs connecting to your server and executing the '
+                . '"php artisan queue:failed" command.'));
     }
 
     /**
