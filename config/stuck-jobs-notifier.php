@@ -39,7 +39,7 @@ return [
     'channels' => [
         'mail',
         // 'slack', // Requires laravel/slack-notification-channel package
-        // NotificationChannels\Webhook\WebhookChannel::class // Requires laravel-notification-channels/webhook package
+        // NotificationChannels\Webhook\WebhookChannel::class, // Requires laravel-notification-channels/webhook package
     ],
 
     'mail' => [
