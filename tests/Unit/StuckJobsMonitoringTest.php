@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Schema;
+use Okipa\LaravelStuckJobsNotifier\Commands\SimulateStuckJobs;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun;
 use Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit;
@@ -291,12 +292,11 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
     public function testSimulationNotification()
     {
         config()->set('stuck-jobs-notifier.callback', null);
-        $this->artisan('queue:stuck:simulate');
+        $this->artisan(SimulateStuckJobs::class);
         NotificationFacade::assertSentTo(
             new Notifiable(),
             JobsAreStuck::class,
             function ($notification, $channels) {
-                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
                 // mail
                 $mailData = $notification->toMail($channels)->toArray();
                 $this->assertStringContainsString('Notification test: ', $mailData['subject']);
@@ -316,6 +316,6 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
     public function testSimulationCallback()
     {
         $this->expectExceptionMessage('Exception test: ');
-        $this->artisan('queue:stuck:simulate');
+        $this->artisan(SimulateStuckJobs::class);
     }
 }

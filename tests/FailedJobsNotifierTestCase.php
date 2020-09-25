@@ -17,14 +17,14 @@ abstract class FailedJobsNotifierTestCase extends TestCase
      *
      * @return void
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('queue.default', 'sync');
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 
@@ -33,7 +33,7 @@ abstract class FailedJobsNotifierTestCase extends TestCase
      *
      * @return array
      */
-    protected function getPackageProviders(): array
+    protected function getPackageProviders($app): array
     {
         return [StuckJobsNotifierServiceProvider::class];
     }

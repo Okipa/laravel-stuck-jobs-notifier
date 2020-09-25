@@ -16,10 +16,12 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 
 | Laravel version | PHP version | Package version |
 |---|---|---|
+| ^7.0 | ^7.4 | ^2.0 |
 | ^6.0 | ^7.4 | ^1.0 |
 
 ## Upgrade guide
 
+* [From v1 to V2](/docs/upgrade-guides/from-v1-to-v2.md)
 * [From okipa/failed-jobs-notifier](/docs/upgrade-guides/from-failed-job-notifier.md)
 
 ## Table of Contents
@@ -38,13 +40,23 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 Install the package with composer:
 
 ```bash
-composer require "okipa/laravel-stuck-jobs-notifier:^1.0"
+composer require "okipa/laravel-stuck-jobs-notifier:^2.0"
 ```
 
-In case you want to use `Slack` notifications you'll also have to install:
+If you intend to send `Slack` notifications you will have to install:
+
+* https://github.com/laravel/slack-notification-channel
 
 ```bash
-composer require guzzlehttp/guzzle
+composer require laravel/slack-notification-channel
+```
+
+If you intend to send `webhook` notifications you will have to install:
+
+* https://github.com/laravel-notification-channels/webhook
+
+```bash
+composer require laravel-notification-channels/webhook
 ```
 
 ## Configuration
@@ -83,7 +95,7 @@ $schedule->command('queue:stuck:notify')->twiceDaily(10, 16);
 
 And you will be notified as soon as some jobs will be stuck in the `failed_jobs` table for the number of days you configured.
 
-To check if everything is correctly configured, you can simulate stuck jobs detection:
+Once everything has been set up, you can check if the configuration is correct by simulating stuck jobs detection:
 
 ```bash
 php artisan queue:stuck:simulate
