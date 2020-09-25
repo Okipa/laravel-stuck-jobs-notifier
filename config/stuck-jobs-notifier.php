@@ -39,14 +39,20 @@ return [
     'channels' => [
         'mail',
         // 'slack', // Requires laravel/slack-notification-channel package
-        // NotificationChannels\Webhook\WebhookChannel::class // Requires laravel-notification-channels/webhook package
+        // NotificationChannels\Webhook\WebhookChannel::class, // Requires laravel-notification-channels/webhook package
     ],
 
-    'mail' => ['to' => 'email@example.test'],
+    'mail' => [
+        'to' => 'email@example.test',
+    ],
 
-    'slack' => ['webhookUrl' => 'https://your-slack-webhook.slack.com'],
+    'slack' => [
+        'webhookUrl' => 'https://your-slack-webhook.slack.com',
+    ],
 
     // Rocket chat webhook example
-    'webhook' => ['url' => 'https://rocket.chat/hooks/1234/5678'],
+    'webhook' => [
+        'url' => 'https://rocket.chat/hooks/1234/5678',
+    ],
 
 ];
