@@ -1,12 +1,21 @@
-# Get notified when stuck jobs are detected
-
-[![Source Code](https://img.shields.io/badge/source-okipa/laravel--stuck--jobs--notifier-blue.svg)](https://github.com/Okipa/laravel-stuck-jobs-notifier)
-[![Latest Version](https://img.shields.io/github/release/okipa/laravel-stuck-jobs-notifier.svg?style=flat-square)](https://github.com/Okipa/laravel-stuck-jobs-notifier/releases)
-[![Total Downloads](https://img.shields.io/packagist/dt/okipa/laravel-stuck-jobs-notifier.svg?style=flat-square)](https://packagist.org/packages/okipa/laravel-stuck-jobs-notifier)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Build status](https://github.com/Okipa/laravel-stuck-jobs-notifier/workflows/CI/badge.svg)](https://github.com/Okipa/laravel-stuck-jobs-notifier/actions)
-[![Coverage Status](https://coveralls.io/repos/github/Okipa/laravel-stuck-jobs-notifier/badge.svg?branch=master)](https://coveralls.io/github/Okipa/laravel-stuck-jobs-notifier?branch=master)
-[![Quality Score](https://img.shields.io/scrutinizer/g/Okipa/laravel-stuck-jobs-notifier.svg?style=flat-square)](https://scrutinizer-ci.com/g/Okipa/laravel-stuck-jobs-notifier/?branch=master)
+![Laravel Stuck Jobs Notifier](/docs/laravel-stuck-jobs-notifier.png)
+<p align="center">
+    <a href="https://github.com/Okipa/laravel-stuck-jobs-notifier/releases" title="Latest Stable Version">
+        <img src="https://img.shields.io/github/release/Okipa/laravel-stuck-jobs-notifier.svg?style=flat-square" alt="Latest Stable Version">
+    </a>
+    <a href="https://packagist.org/packages/Okipa/laravel-stuck-jobs-notifier" title="Total Downloads">
+        <img src="https://img.shields.io/packagist/dt/okipa/laravel-stuck-jobs-notifier.svg?style=flat-square" alt="Total Downloads">
+    </a>
+    <a href="https://github.com/Okipa/laravel-stuck-jobs-notifier/actions" title="Build Status">
+        <img src="https://github.com/Okipa/laravel-stuck-jobs-notifier/workflows/CI/badge.svg" alt="Build Status">
+    </a>
+    <a href="https://coveralls.io/github/Okipa/laravel-stuck-jobs-notifier?branch=master" title="Coverage Status">
+        <img src="https://coveralls.io/repos/github/Okipa/laravel-stuck-jobs-notifier/badge.svg?branch=master" alt="Coverage Status">
+    </a>
+    <a href="https://img.shields.io/badge/License-MIT-blue.svg" title="License: MIT">
+        <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT">
+    </a>
+</p>
 
 Get notified and execute PHP callback when you have stuck jobs for a defined number of hours.
   
@@ -40,7 +49,7 @@ Notifications can be sent by mail, Slack and webhooks (chats often provide a web
 Install the package with composer:
 
 ```bash
-composer require "okipa/laravel-stuck-jobs-notifier:^2.0"
+composer require okipa/laravel-stuck-jobs-notifier
 ```
 
 If you intend to send `Slack` notifications you will have to install:
