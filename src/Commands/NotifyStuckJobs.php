@@ -29,6 +29,6 @@ class NotifyStuckJobs extends Command
      */
     public function handle(): void
     {
-        (new StuckJobsNotifier)->notify();
+        app(StuckJobsNotifier::class)->notify();
     }
 }

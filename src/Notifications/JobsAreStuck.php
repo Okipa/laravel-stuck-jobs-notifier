@@ -44,9 +44,9 @@ class JobsAreStuck extends Notification
      */
     public function toMail(): MailMessage
     {
-        return (new MailMessage)->level('error')
-            ->subject(($this->isTesting ? (string) __('Notification test:') . ' ' : '')
-                . (string) trans_choice(
+        return (new MailMessage())->level('error')
+            ->subject(($this->isTesting ? __('Notification test:') . ' ' : '')
+                . trans_choice(
                     '{1}[:app - :env] :count job is stuck in queue|[2,*][:app - :env] :count jobs are stuck in queue',
                     $this->stuckJobsCount,
                     [
@@ -55,8 +55,8 @@ class JobsAreStuck extends Notification
                         'count' => $this->stuckJobsCount,
                     ]
                 ))
-            ->line(($this->isTesting ? (string) __('Notification test:') . ' ' : '')
-                . (string) trans_choice(
+            ->line(($this->isTesting ? __('Notification test:') . ' ' : '')
+                . trans_choice(
                     '{1}We have detected that :count job is stuck in the [:app - :env](:url) queue '
                     . 'since the :day at :hour.'
                     . '|[2,*]We have detected that :count jobs are stuck in the [:app - :env](:url) queue '
@@ -82,9 +82,9 @@ class JobsAreStuck extends Notification
      */
     public function toSlack(): SlackMessage
     {
-        return (new SlackMessage)->error()->content('⚠ '
-            . ($this->isTesting ? (string) __('Notification test:') . ' ' : '')
-            . (string) trans_choice(
+        return (new SlackMessage())->error()->content('⚠ '
+            . ($this->isTesting ? __('Notification test:') . ' ' : '')
+            . trans_choice(
                 '{1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.'
                 . '|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.',
                 $this->stuckJobsCount,
@@ -106,11 +106,11 @@ class JobsAreStuck extends Notification
      */
     public function toWebhook(): WebhookMessage
     {
-        // rocket chat webhook example
+        // Rocket chat webhook example.
         return WebhookMessage::create()->data([
             'text' => '⚠ '
                 . ($this->isTesting ? (string) __('Notification test:') . ' ' : '')
-                . (string) trans_choice(
+                . trans_choice(
                     '{1}`[:app - :env]` :count job is stuck in the :url queue since the :day at :hour.'
                     . '|[2,*]`[:app - :env]` :count jobs are stuck in the :url queue since the :day at :hour.',
                     $this->stuckJobsCount,
