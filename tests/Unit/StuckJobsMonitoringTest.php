@@ -3,7 +3,7 @@
 namespace Okipa\LaravelStuckJobsNotifier\Test\Unit;
 
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Schema;
 use Okipa\LaravelStuckJobsNotifier\Commands\SimulateStuckJobs;
@@ -27,51 +27,51 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::fake();
     }
 
-    public function testAllowedToRunWithWrongValue()
+    public function testAllowedToRunWithWrongValue(): void
     {
         config()->set('stuck-jobs-notifier.allowed_to_run', 'test');
         $this->expectException(InvalidAllowedToRun::class);
-        (new StuckJobsNotifier)->isAllowedToRun();
+        app(StuckJobsNotifier::class)->isAllowedToRun();
     }
 
-    public function testAllowedToRunWithBoolean()
+    public function testAllowedToRunWithBoolean(): void
     {
         config()->set('stuck-jobs-notifier.allowed_to_run', false);
-        $allowedToRun = (new StuckJobsNotifier)->isAllowedToRun();
-        $this->assertEquals($allowedToRun, false);
+        $allowedToRun = app(StuckJobsNotifier::class)->isAllowedToRun();
+        self::assertFalse($allowedToRun);
     }
 
-    public function testAllowedToRunWithCallable()
+    public function testAllowedToRunWithCallable(): void
     {
         config()->set('stuck-jobs-notifier.allowed_to_run', function () {
             return true;
         });
-        $allowedToRun = (new StuckJobsNotifier)->isAllowedToRun();
-        $this->assertEquals($allowedToRun, true);
+        $allowedToRun = app(StuckJobsNotifier::class)->isAllowedToRun();
+        self::assertTrue($allowedToRun);
     }
 
-    public function testFailedJobTableDoesNotExists()
+    public function testFailedJobTableDoesNotExists(): void
     {
         Schema::drop('failed_jobs');
         $this->expectException(InexistentFailedJobsTable::class);
-        (new StuckJobsNotifier)->checkFailedJobsTableExists();
+        app(StuckJobsNotifier::class)->checkFailedJobsTableExists();
     }
 
-    public function testSetDaysLimitWithWrongValue()
+    public function testSetDaysLimitWithWrongValue(): void
     {
         config()->set('stuck-jobs-notifier.hours_limit', 'test');
         $this->expectException(InvalidHoursLimit::class);
-        (new StuckJobsNotifier)->getHoursLimit();
+        app(StuckJobsNotifier::class)->getHoursLimit();
     }
 
-    public function testSetDaysLimitWithInt()
+    public function testSetDaysLimitWithInt(): void
     {
         config()->set('stuck-jobs-notifier.hours_limit', 5);
-        $hoursLimit = (new StuckJobsNotifier)->getHoursLimit();
-        $this->assertEquals(5, $hoursLimit);
+        $hoursLimit = app(StuckJobsNotifier::class)->getHoursLimit();
+        self::assertEquals(5, $hoursLimit);
     }
 
-    public function testGetStuckFailedJobs()
+    public function testGetStuckFailedJobs(): void
     {
         $failedAtDates = [
             Carbon::now()->subHours(6)->startOfHour(),
@@ -94,35 +94,35 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
             ]);
         }
         config()->set('stuck-jobs-notifier.hours_limit', 5);
-        $stuckJobs = (new StuckJobsNotifier)->getStuckFailedJobs();
-        $dateLimit = (new StuckJobsNotifier)->getDateLimit();
+        $stuckJobs = app(StuckJobsNotifier::class)->getStuckFailedJobs();
+        $dateLimit = app(StuckJobsNotifier::class)->getDateLimit();
         foreach ($stuckJobs as $stuckJob) {
-            $this->assertTrue($dateLimit->greaterThanOrEqualTo($stuckJob->failed_at));
+            self::assertTrue($dateLimit->greaterThanOrEqualTo($stuckJob->failed_at));
         }
     }
 
-    public function testSetCustomNotifiable()
+    public function testSetCustomNotifiable(): void
     {
         config()->set('stuck-jobs-notifier.notifiable', AnotherNotifiable::class);
-        $notifiable = (new StuckJobsNotifier)->getNotifiable();
-        $this->assertInstanceOf(AnotherNotifiable::class, $notifiable);
+        $notifiable = app(StuckJobsNotifier::class)->getNotifiable();
+        self::assertInstanceOf(AnotherNotifiable::class, $notifiable);
     }
 
-    public function testSetCustomNotification()
+    public function testSetCustomNotification(): void
     {
         config()->set('stuck-jobs-notifier.notification', AnotherNotification::class);
-        $notification = (new StuckJobsNotifier)->getNotification(collect());
-        $this->assertInstanceOf(AnotherNotification::class, $notification);
+        $notification = app(StuckJobsNotifier::class)->getNotification(collect());
+        self::assertInstanceOf(AnotherNotification::class, $notification);
     }
 
-    public function testSetCustomCallback()
+    public function testSetCustomCallback(): void
     {
         config()->set('stuck-jobs-notifier.callback', AnotherCallback::class);
-        $callback = (new StuckJobsNotifier)->getCallback();
-        $this->assertInstanceOf(AnotherCallback::class, $callback);
+        $callback = app(StuckJobsNotifier::class)->getCallback();
+        self::assertInstanceOf(AnotherCallback::class, $callback);
     }
 
-    public function setNothingHappensWhenNotAllowed()
+    public function setNothingHappensWhenNotAllowed(): void
     {
         DB::table('failed_jobs')->insert([
             'connection' => 'whatever',
@@ -136,7 +136,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::assertNothingSent();
     }
 
-    public function testNotificationIsSentWhenJobsAreStuck()
+    public function testNotificationIsSentWhenJobsAreStuck(): void
     {
         DB::table('failed_jobs')->insert([
             'connection' => 'whatever',
@@ -151,7 +151,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::assertSentTo(new Notifiable(), JobsAreStuck::class);
     }
 
-    public function testCallbackIsTriggeredWhenHobsAreStuck()
+    public function testCallbackIsTriggeredWhenHobsAreStuck(): void
     {
         DB::table('failed_jobs')->insert([
             'connection' => 'whatever',
@@ -165,45 +165,45 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         $this->artisan('queue:stuck:notify')->assertExitCode(0);
     }
 
-    public function testDefaultProcessesAreDownNotificationSingularMessage()
+    public function testDefaultProcessesAreDownNotificationSingularMessage(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
             ['failed_at' => $date->toDateTimeString()],
         ]);
-        $notification = (new StuckJobsNotifier)->getNotification($stuckJobs);
-        $notifiable = (new StuckJobsNotifier)->getNotifiable();
+        $notification = app(StuckJobsNotifier::class)->getNotification($stuckJobs);
+        $notifiable = app(StuckJobsNotifier::class)->getNotifiable();
         $notifiable->notify($notification);
         NotificationFacade::assertSentTo(
             new Notifiable(),
             JobsAreStuck::class,
             function ($notification, $channels) use ($date) {
-                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
-                // mail
+                self::assertEquals(config('stuck-jobs-notifier.channels'), $channels);
+                // Mail
                 $mailData = $notification->toMail($channels)->toArray();
-                $this->assertEquals('error', $mailData['level']);
-                $this->assertEquals('[Laravel - testing] 1 job is stuck in queue', $mailData['subject']);
-                $this->assertEquals(
+                self::assertEquals('error', $mailData['level']);
+                self::assertEquals('[Laravel - testing] 1 job is stuck in queue', $mailData['subject']);
+                self::assertEquals(
                     'We have detected that 1 job is stuck in the [Laravel - testing](http://localhost) queue '
                     . 'since the ' . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
                     $mailData['introLines'][0]
                 );
-                $this->assertEquals(
+                self::assertEquals(
                     'Please check your stuck jobs connecting to your server and executing the '
                     . '"php artisan queue:failed" command.',
                     $mailData['introLines'][1]
                 );
-                // slack
+                // Slack
                 $slackData = $notification->toSlack($channels);
-                $this->assertEquals('error', $slackData->level);
-                $this->assertEquals(
+                self::assertEquals('error', $slackData->level);
+                self::assertEquals(
                     '⚠ `[Laravel - testing]` 1 job is stuck in the http://localhost queue since the '
                     . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
                     $slackData->content
                 );
-                // webhook
+                // Webhook
                 $webhookData = $notification->toWebhook($channels)->toArray();
-                $this->assertEquals(
+                self::assertEquals(
                     '⚠ `[Laravel - testing]` 1 job is stuck in the http://localhost queue since the '
                     . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
                     $webhookData['data']['text']
@@ -214,46 +214,46 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testDefaultProcessesAreDownNotificationPluralMessage()
+    public function testDefaultProcessesAreDownNotificationPluralMessage(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
             ['failed_at' => $date->toDateTimeString()],
             ['failed_at' => $date->copy()->addHour()->toDateTimeString()],
         ]);
-        $notification = (new StuckJobsNotifier)->getNotification($stuckJobs);
-        $notifiable = (new StuckJobsNotifier)->getNotifiable();
+        $notification = app(StuckJobsNotifier::class)->getNotification($stuckJobs);
+        $notifiable = app(StuckJobsNotifier::class)->getNotifiable();
         $notifiable->notify($notification);
         NotificationFacade::assertSentTo(
             new Notifiable(),
             JobsAreStuck::class,
             function ($notification, $channels) use ($date) {
-                $this->assertEquals(config('stuck-jobs-notifier.channels'), $channels);
-                // mail
+                self::assertEquals(config('stuck-jobs-notifier.channels'), $channels);
+                // Mail
                 $mailData = $notification->toMail($channels)->toArray();
-                $this->assertEquals('error', $mailData['level']);
-                $this->assertEquals('[Laravel - testing] 2 jobs are stuck in queue', $mailData['subject']);
-                $this->assertEquals(
+                self::assertEquals('error', $mailData['level']);
+                self::assertEquals('[Laravel - testing] 2 jobs are stuck in queue', $mailData['subject']);
+                self::assertEquals(
                     'We have detected that 2 jobs are stuck in the [Laravel - testing](http://localhost) queue '
                     . 'since the ' . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
                     $mailData['introLines'][0]
                 );
-                $this->assertEquals(
+                self::assertEquals(
                     'Please check your stuck jobs connecting to your server and executing the '
                     . '"php artisan queue:failed" command.',
                     $mailData['introLines'][1]
                 );
-                // slack
+                // Slack
                 $slackData = $notification->toSlack($channels);
-                $this->assertEquals('error', $slackData->level);
-                $this->assertEquals(
+                self::assertEquals('error', $slackData->level);
+                self::assertEquals(
                     '⚠ `[Laravel - testing]` 2 jobs are stuck in the http://localhost queue since the '
                     . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
                     $slackData->content
                 );
-                // webhook
+                // Webhook
                 $webhookData = $notification->toWebhook($channels)->toArray();
-                $this->assertEquals(
+                self::assertEquals(
                     '⚠ `[Laravel - testing]` 2 jobs are stuck in the http://localhost queue since the '
                     . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.',
                     $webhookData['data']['text']
@@ -264,32 +264,32 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testDefaultDownProcessesCallbackExceptionSingularMessage()
+    public function testDefaultDownProcessesCallbackExceptionSingularMessage(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
             ['failed_at' => $date->toDateTimeString()],
         ]);
-        $callback = (new StuckJobsNotifier)->getCallback();
+        $callback = app(StuckJobsNotifier::class)->getCallback();
         $this->expectExceptionMessage('1 job is stuck in queue since the '
             . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.');
         $callback($stuckJobs);
     }
 
-    public function testDefaultDownProcessesCallbackExceptionPluralMessage()
+    public function testDefaultDownProcessesCallbackExceptionPluralMessage(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
             ['failed_at' => $date->toDateTimeString()],
             ['failed_at' => $date->copy()->addHour()->toDateTimeString()],
         ]);
-        $callback = (new StuckJobsNotifier)->getCallback();
+        $callback = app(StuckJobsNotifier::class)->getCallback();
         $this->expectExceptionMessage('2 jobs are stuck in queue since the '
             . $date->format('d/m/Y') . ' at ' . $date->format('H:i:s') . '.');
         $callback($stuckJobs);
     }
 
-    public function testSimulationNotification()
+    public function testSimulationNotification(): void
     {
         config()->set('stuck-jobs-notifier.callback', null);
         $this->artisan(SimulateStuckJobs::class);
@@ -297,14 +297,14 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
             new Notifiable(),
             JobsAreStuck::class,
             function ($notification, $channels) {
-                // mail
+                // Mail
                 $mailData = $notification->toMail($channels)->toArray();
                 $this->assertStringContainsString('Notification test: ', $mailData['subject']);
                 $this->assertStringContainsString('Notification test: ', $mailData['introLines'][0]);
-                // slack
+                // Slack
                 $slackData = $notification->toSlack($channels);
                 $this->assertStringContainsString('Notification test: ', $slackData->content);
-                // webhook
+                // Webhook
                 $webhookData = $notification->toWebhook($channels)->toArray();
                 $this->assertStringContainsString('Notification test: ', $webhookData['data']['text']);
 
@@ -313,7 +313,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testSimulationCallback()
+    public function testSimulationCallback(): void
     {
         $this->expectExceptionMessage('Exception test: ');
         $this->artisan(SimulateStuckJobs::class);

@@ -44,7 +44,8 @@ class StuckJobsNotifier
         $allowedToRun = config('stuck-jobs-notifier.allowed_to_run');
         if (is_callable($allowedToRun)) {
             return $allowedToRun();
-        } elseif (is_bool($allowedToRun)) {
+        }
+        if (is_bool($allowedToRun)) {
             return $allowedToRun;
         }
         throw new InvalidAllowedToRun('The `stuck-jobs-notifier.allowed_to_run` config is not a boolean or '

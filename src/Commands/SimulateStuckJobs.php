@@ -29,9 +29,9 @@ class SimulateStuckJobs extends Command
             ['failed_at' => Carbon::now()],
             ['failed_at' => Carbon::now()],
         ]);
-        $notification = (new StuckJobsNotifier)->getNotification($fakeStuckJobs, true);
-        (new StuckJobsNotifier)->getNotifiable()->notify($notification);
-        $callback = (new StuckJobsNotifier)->getCallback();
+        $notification = app(StuckJobsNotifier::class)->getNotification($fakeStuckJobs, true);
+        app(StuckJobsNotifier::class)->getNotifiable()->notify($notification);
+        $callback = app(StuckJobsNotifier::class)->getCallback();
         if ($callback) {
             $callback($fakeStuckJobs, true);
         }
