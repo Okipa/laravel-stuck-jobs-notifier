@@ -12,7 +12,7 @@
     <a href="https://coveralls.io/github/Okipa/laravel-stuck-jobs-notifier?branch=master" title="Coverage Status">
         <img src="https://coveralls.io/repos/github/Okipa/laravel-stuck-jobs-notifier/badge.svg?branch=master" alt="Coverage Status">
     </a>
-    <a href="https://img.shields.io/badge/License-MIT-blue.svg" title="License: MIT">
+    <a href="/LICENSE.md" title="License: MIT">
         <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT">
     </a>
 </p>
@@ -20,6 +20,11 @@
 Get notified and execute PHP callback when you have stuck jobs for a defined number of hours.
   
 Notifications can be sent by mail, Slack and webhooks (chats often provide a webhook API).
+
+Found this package helpful? Please consider supporting my work!
+
+[![Donate](https://img.shields.io/badge/Buy_me_a-Ko--fi-ff5f5f.svg)](https://ko-fi.com/arthurlorent)
+[![Donate](https://img.shields.io/badge/Donate_on-PayPal-green.svg)](https://paypal.me/arthurlorent)
 
 ## Compatibility
 
