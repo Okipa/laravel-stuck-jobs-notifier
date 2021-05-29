@@ -26,10 +26,6 @@ In case of customizations, please note that the following class and exception na
 * `FailedJobsNotifier` class has been renamed `StuckJobsNotifier`.
 * `InvalidDaysLimit` exception has been renamed `InvalidHoursLimit`.
 
-## See all changes
-
-See all change with the [comparison tool](https://github.com/Okipa/laravel-table/compare/1.5.0...2.0.0).
-
 ## Undocumented changes
 
 If you see any forgotten and undocumented change, please submit a PR to add them to this upgrade guide.
