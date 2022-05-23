@@ -14,7 +14,7 @@ In the opposite, if you intend to send Slack and/or webhook notifications, insta
 
 ## See all changes
 
-See all change with the [comparison tool](https://github.com/Okipa/laravel-table/compare/1.5.0...2.0.0).
+See all change with the [comparison tool](https://github.com/Okipa/laravel-stuck-job-notifier/compare/1.5.0...2.0.0).
 
 ## Undocumented changes
 
