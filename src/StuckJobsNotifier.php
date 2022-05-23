@@ -3,7 +3,9 @@
 namespace Okipa\LaravelStuckJobsNotifier;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Okipa\LaravelStuckJobsNotifier\Callbacks\OnStuckJobs;
@@ -35,10 +37,7 @@ class StuckJobsNotifier
         }
     }
 
-    /**
-     * @return bool
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun
-     */
+    /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidAllowedToRun */
     public function isAllowedToRun(): bool
     {
         $allowedToRun = config('stuck-jobs-notifier.allowed_to_run');
@@ -53,7 +52,6 @@ class StuckJobsNotifier
     }
 
     /**
-     * @return \Illuminate\Support\Collection
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable
      * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit
      */
@@ -65,9 +63,7 @@ class StuckJobsNotifier
         return DB::table('failed_jobs')->where('failed_at', '<=', $dateLimit)->get();
     }
 
-    /**
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable
-     */
+    /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InexistentFailedJobsTable */
     public function checkFailedJobsTableExists(): void
     {
         if (! Schema::hasTable('failed_jobs')) {
@@ -76,21 +72,15 @@ class StuckJobsNotifier
         }
     }
 
-    /**
-     * @return \Carbon\Carbon
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit
-     */
-    public function getDateLimit(): Carbon
+    /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit */
+    public function getDateLimit(): CarbonInterface
     {
         $hoursLimit = $this->getHoursLimit();
 
-        return Carbon::now()->subHours($hoursLimit);
+        return Date::now()->subHours($hoursLimit);
     }
 
-    /**
-     * @return int
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit
-     */
+    /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\InvalidHoursLimit */
     public function getHoursLimit(): int
     {
         $hoursLimit = config('stuck-jobs-notifier.hours_limit');

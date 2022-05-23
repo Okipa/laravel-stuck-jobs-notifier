@@ -3,6 +3,7 @@
 namespace Okipa\LaravelStuckJobsNotifier\Notifications;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
@@ -11,37 +12,21 @@ use NotificationChannels\Webhook\WebhookMessage;
 
 class JobsAreStuck extends Notification
 {
-    protected Collection $stuckJobs;
-
-    protected bool $isTesting;
-
     protected int $stuckJobsCount;
 
-    protected Carbon $stuckSince;
+    protected CarbonInterface $stuckSince;
 
-    public function __construct(Collection $stuckJobs, bool $isTesting)
+    public function __construct(protected Collection $stuckJobs, protected bool $isTesting)
     {
-        $this->stuckJobs = $stuckJobs;
-        $this->isTesting = $isTesting;
         $this->stuckJobsCount = $stuckJobs->count();
         $this->stuckSince = Carbon::parse($this->stuckJobs->min('failed_at'));
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array
-     */
     public function via(): array
     {
         return config('stuck-jobs-notifier.channels');
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
     public function toMail(): MailMessage
     {
         return (new MailMessage())->level('error')
@@ -99,11 +84,6 @@ class JobsAreStuck extends Notification
             ));
     }
 
-    /**
-     * Get the webhook representation of the notification.
-     *
-     * @return \NotificationChannels\Webhook\WebhookMessage
-     */
     public function toWebhook(): WebhookMessage
     {
         // Rocket chat webhook example.
