@@ -36,7 +36,7 @@ Found this package helpful? Please consider supporting my work!
 
 ## Upgrade guide
 
-* From v2 to v3 : ``
+* [From v2 to V3](/docs/upgrade-guides/from-v2-to-v3.md)
 * [From v1 to V2](/docs/upgrade-guides/from-v1-to-v2.md)
 * [From okipa/failed-jobs-notifier](/docs/upgrade-guides/from-failed-job-notifier.md)
 
