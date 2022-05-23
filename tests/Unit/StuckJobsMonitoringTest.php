@@ -21,7 +21,7 @@ use Okipa\LaravelStuckJobsNotifier\Test\TestCase;
 
 class StuckJobsMonitoringTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         NotificationFacade::fake();
