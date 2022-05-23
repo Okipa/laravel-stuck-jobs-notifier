@@ -7,18 +7,10 @@ use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifier;
 
 class NotifyStuckJobs extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'queue:stuck:notify';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $description = 'Notify when failed jobs are stuck for a defined number of hours.';
 
     /**

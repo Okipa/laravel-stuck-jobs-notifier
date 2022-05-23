@@ -8,18 +8,10 @@ use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifier;
 
 class SimulateStuckJobs extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'queue:stuck:simulate';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $description = 'Simulate stuck jobs detection for testing purpose.';
 
     /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected */
