@@ -17,61 +17,66 @@ use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifier;
 use Okipa\LaravelStuckJobsNotifier\Test\Dummy\AnotherNotifiable;
 use Okipa\LaravelStuckJobsNotifier\Test\Dummy\Callbacks\AnotherCallback;
 use Okipa\LaravelStuckJobsNotifier\Test\Dummy\Notifications\AnotherNotification;
-use Okipa\LaravelStuckJobsNotifier\Test\FailedJobsNotifierTestCase;
+use Okipa\LaravelStuckJobsNotifier\Test\TestCase;
 
-class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
+class StuckJobsMonitoringTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         NotificationFacade::fake();
     }
 
-    public function testAllowedToRunWithWrongValue(): void
+    /** @test */
+    public function it_can_check_if_allowed_to_run_with_wrong_config_value(): void
     {
         config()->set('stuck-jobs-notifier.allowed_to_run', 'test');
         $this->expectException(InvalidAllowedToRun::class);
         app(StuckJobsNotifier::class)->isAllowedToRun();
     }
 
-    public function testAllowedToRunWithBoolean(): void
+    /** @test */
+    public function it_can_check_if_allowed_to_run_with_boolean_value(): void
     {
         config()->set('stuck-jobs-notifier.allowed_to_run', false);
         $allowedToRun = app(StuckJobsNotifier::class)->isAllowedToRun();
         self::assertFalse($allowedToRun);
     }
 
-    public function testAllowedToRunWithCallable(): void
+    /** @test */
+    public function it_can_check_if_allowed_to_run_with_callable_value(): void
     {
-        config()->set('stuck-jobs-notifier.allowed_to_run', function () {
-            return true;
-        });
+        config()->set('stuck-jobs-notifier.allowed_to_run', fn() => true);
         $allowedToRun = app(StuckJobsNotifier::class)->isAllowedToRun();
         self::assertTrue($allowedToRun);
     }
 
-    public function testFailedJobTableDoesNotExists(): void
+    /** @test */
+    public function it_can_fetch_failed_jobs_when_table_does_not_exist(): void
     {
         Schema::drop('failed_jobs');
         $this->expectException(InexistentFailedJobsTable::class);
         app(StuckJobsNotifier::class)->checkFailedJobsTableExists();
     }
 
-    public function testSetDaysLimitWithWrongValue(): void
+    /** @test */
+    public function it_cant_get_hours_limit_with_wrong_config_value(): void
     {
         config()->set('stuck-jobs-notifier.hours_limit', 'test');
         $this->expectException(InvalidHoursLimit::class);
         app(StuckJobsNotifier::class)->getHoursLimit();
     }
 
-    public function testSetDaysLimitWithInt(): void
+    /** @test */
+    public function it_can_get_hours_limit_with_int_config_value(): void
     {
         config()->set('stuck-jobs-notifier.hours_limit', 5);
         $hoursLimit = app(StuckJobsNotifier::class)->getHoursLimit();
         self::assertEquals(5, $hoursLimit);
     }
 
-    public function testGetStuckFailedJobs(): void
+    /** @test */
+    public function it_can_get_stuck_failed_jobs(): void
     {
         $failedAtDates = [
             Carbon::now()->subHours(6)->startOfHour(),
@@ -101,28 +106,32 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         }
     }
 
-    public function testSetCustomNotifiable(): void
+    /** @test */
+    public function it_can_set_custom_notifiable(): void
     {
         config()->set('stuck-jobs-notifier.notifiable', AnotherNotifiable::class);
         $notifiable = app(StuckJobsNotifier::class)->getNotifiable();
         self::assertInstanceOf(AnotherNotifiable::class, $notifiable);
     }
 
-    public function testSetCustomNotification(): void
+    /** @test */
+    public function it_can_set_custom_notification(): void
     {
         config()->set('stuck-jobs-notifier.notification', AnotherNotification::class);
         $notification = app(StuckJobsNotifier::class)->getNotification(collect());
         self::assertInstanceOf(AnotherNotification::class, $notification);
     }
 
-    public function testSetCustomCallback(): void
+    /** @test */
+    public function it_can_set_custom_callback(): void
     {
         config()->set('stuck-jobs-notifier.callback', AnotherCallback::class);
         $callback = app(StuckJobsNotifier::class)->getCallback();
         self::assertInstanceOf(AnotherCallback::class, $callback);
     }
 
-    public function setNothingHappensWhenNotAllowed(): void
+    /** @test */
+    public function it_cant_send_notification_when_not_allowed_to_run(): void
     {
         DB::table('failed_jobs')->insert([
             'connection' => 'whatever',
@@ -136,7 +145,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::assertNothingSent();
     }
 
-    public function testNotificationIsSentWhenJobsAreStuck(): void
+    /** @test */
+    public function it_can_send_notification_when_jobs_are_stuck(): void
     {
         DB::table('failed_jobs')->insert([
             'connection' => 'whatever',
@@ -151,7 +161,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::assertSentTo(new Notifiable(), JobsAreStuck::class);
     }
 
-    public function testCallbackIsTriggeredWhenHobsAreStuck(): void
+    /** @test */
+    public function it_can_trigger_callback_when_jobs_are_stuck(): void
     {
         DB::table('failed_jobs')->insert([
             'connection' => 'whatever',
@@ -165,7 +176,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         $this->artisan('queue:stuck:notify')->assertExitCode(0);
     }
 
-    public function testDefaultProcessesAreDownNotificationSingularMessage(): void
+    /** @test */
+    public function it_can_send_default_processes_are_down_singular_notification_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -177,7 +189,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::assertSentTo(
             new Notifiable(),
             JobsAreStuck::class,
-            function ($notification, $channels) use ($date) {
+            static function ($notification, $channels) use ($date) {
                 self::assertEquals(config('stuck-jobs-notifier.channels'), $channels);
                 // Mail
                 $mailData = $notification->toMail($channels)->toArray();
@@ -214,7 +226,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testDefaultProcessesAreDownNotificationPluralMessage(): void
+    /** @test */
+    public function it_can_send_default_processes_are_down_plural_notification_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -227,7 +240,7 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         NotificationFacade::assertSentTo(
             new Notifiable(),
             JobsAreStuck::class,
-            function ($notification, $channels) use ($date) {
+            static function ($notification, $channels) use ($date) {
                 self::assertEquals(config('stuck-jobs-notifier.channels'), $channels);
                 // Mail
                 $mailData = $notification->toMail($channels)->toArray();
@@ -264,7 +277,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testDefaultDownProcessesCallbackExceptionSingularMessage(): void
+    /** @test */
+    public function it_can_send_default_down_processed_callback_exception_singular_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -276,7 +290,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         $callback($stuckJobs);
     }
 
-    public function testDefaultDownProcessesCallbackExceptionPluralMessage(): void
+    /** @test */
+    public function it_can_send_default_down_processed_callback_exception_plural_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -289,7 +304,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         $callback($stuckJobs);
     }
 
-    public function testSimulationNotification(): void
+    /** @test */
+    public function it_can_simulate_stuck_jobs_notification(): void
     {
         config()->set('stuck-jobs-notifier.callback', null);
         $this->artisan(SimulateStuckJobs::class);
@@ -313,7 +329,8 @@ class StuckJobsMonitoringTest extends FailedJobsNotifierTestCase
         );
     }
 
-    public function testSimulationCallback(): void
+    /** @test */
+    public function it_can_simulate_stuck_jobs_exception(): void
     {
         $this->expectExceptionMessage('Exception test: ');
         $this->artisan(SimulateStuckJobs::class);
