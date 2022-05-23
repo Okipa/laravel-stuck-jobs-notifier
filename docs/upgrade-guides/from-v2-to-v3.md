@@ -10,9 +10,11 @@ PHP 7.4 and Laravel 7.0 are no longer supported in v3.
 
 ## How to upgrade ?
 
-Just execute the following command `composer require okipa/laravel-stuck-job-notifier:^3.0`.
+Just bump the version the package to `^3.0`.
 
-You also may have to bump the package optional dependencies listed in the [installation documentation part](../../README.md#installation) if you have installed them.
+You also may have to bump the package optional dependencies listed in the [installation documentation part](../../README.md#installation) if you have installed them:
+* `laravel-notification-channels/webhook` should be upgrade to version `^2.3`
+* `laravel/slack-notification-channel` should be upgrade to version `^2.4`
 
 ## See all changes
 
