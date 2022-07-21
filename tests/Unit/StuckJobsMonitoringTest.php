@@ -177,7 +177,7 @@ class StuckJobsMonitoringTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_default_processes_are_down_singular_notification_message(): void
+    public function it_can_send_default_stuck_job_singular_notification_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -227,7 +227,7 @@ class StuckJobsMonitoringTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_default_processes_are_down_plural_notification_message(): void
+    public function it_can_send_default_stuck_jobs_plural_notification_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -278,7 +278,7 @@ class StuckJobsMonitoringTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_default_down_processed_callback_exception_singular_message(): void
+    public function it_can_trigger_default_stuck_job_callback_exception_singular_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([
@@ -291,7 +291,7 @@ class StuckJobsMonitoringTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_default_down_processed_callback_exception_plural_message(): void
+    public function it_can_trigger_default_stuck_jobs_callback_exception_plural_message(): void
     {
         $date = Carbon::now()->subHours(4);
         $stuckJobs = collect([

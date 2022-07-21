@@ -2,7 +2,6 @@
 
 namespace Okipa\LaravelStuckJobsNotifier\Test;
 
-use Faker\Factory;
 use Okipa\LaravelStuckJobsNotifier\StuckJobsNotifierServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
