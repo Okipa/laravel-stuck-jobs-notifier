@@ -2,7 +2,6 @@
 
 namespace Okipa\LaravelStuckJobsNotifier;
 
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
