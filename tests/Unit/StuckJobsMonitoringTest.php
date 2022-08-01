@@ -46,7 +46,7 @@ class StuckJobsMonitoringTest extends TestCase
     /** @test */
     public function it_can_check_if_allowed_to_run_with_callable_value(): void
     {
-        config()->set('stuck-jobs-notifier.allowed_to_run', fn() => true);
+        config()->set('stuck-jobs-notifier.allowed_to_run', fn () => true);
         $allowedToRun = app(StuckJobsNotifier::class)->isAllowedToRun();
         self::assertTrue($allowedToRun);
     }
