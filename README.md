@@ -1,5 +1,5 @@
 ![Laravel Stuck Jobs Notifier](/docs/laravel-stuck-jobs-notifier.png)
-<p align="center">
+<p style="text-align: center;">
     <a href="https://github.com/Okipa/laravel-stuck-jobs-notifier/releases" title="Latest Stable Version">
         <img src="https://img.shields.io/github/release/Okipa/laravel-stuck-jobs-notifier.svg?style=flat-square" alt="Latest Stable Version">
     </a>
@@ -30,8 +30,10 @@ Found this package helpful? Please consider supporting my work!
 
 | Laravel version | PHP version | Package version |
 |---|---|---|
-| ^7.0 | ^7.4 | ^2.0 |
-| ^6.0 | ^7.4 | ^1.0 |
+| ^8.0 &#124; ^9.0 | ^8.0 &#124; ^8.1 | ^2.2 |
+| ^7.0 &#124; ^8.0 | ^7.4 &#124; ^8.0 | ^2.1 |
+| ^7.0 &#124; ^8.0 | ^7.4 | ^2.0 |
+| ^6.0 &#124; ^7.0 | ^7.4 | ^1.0 |
 
 ## Upgrade guide
 

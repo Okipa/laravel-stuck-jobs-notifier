@@ -8,12 +8,7 @@ use Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected;
 
 class OnStuckJobs
 {
-    /**
-     * @param \Illuminate\Support\Collection $stuckJobs
-     * @param bool $isTesting
-     *
-     * @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected
-     */
+    /** @throws \Okipa\LaravelStuckJobsNotifier\Exceptions\StuckJobsDetected */
     public function __invoke(Collection $stuckJobs, bool $isTesting = false)
     {
         $stuckJobsCount = $stuckJobs->count();
