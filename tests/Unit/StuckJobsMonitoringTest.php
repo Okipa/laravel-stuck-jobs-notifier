@@ -180,9 +180,7 @@ class StuckJobsMonitoringTest extends TestCase
     public function it_can_send_default_stuck_job_singular_notification_message(): void
     {
         $date = Carbon::now()->subHours(4);
-        $stuckJobs = collect([
-            ['failed_at' => $date->toDateTimeString()],
-        ]);
+        $stuckJobs = collect([['failed_at' => $date->toDateTimeString()]]);
         $notification = app(StuckJobsNotifier::class)->getNotification($stuckJobs);
         $notifiable = app(StuckJobsNotifier::class)->getNotifiable();
         $notifiable->notify($notification);
