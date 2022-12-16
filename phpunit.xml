@@ -31,8 +31,8 @@
         </report>
     </coverage>
     <php>
-        <server name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+        <server name="APP_ENV" value="testing"/>
         <server name="LOG_CHANNEL" value="null"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
