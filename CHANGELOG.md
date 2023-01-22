@@ -4,9 +4,9 @@
 
 2023-01-22
 
-* Locked PHP versions to 8.1 and 8.2
-* Dropped Laravel 8 support
 * Added Laravel 10 support
+* Dropped Laravel 8 support
+* Locked PHP versions to 8.1 and 8.2
 
 ## [2.3.0](https://github.com/Okipa/laravel-stuck-jobs-notifier/compare/2.2.2...2.3.0)
 
