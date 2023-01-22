@@ -30,8 +30,8 @@
     },
     "require-dev": {
         "brianium/paratest": "^6.4",
-        "laravel-notification-channels/webhook": "^2.3",
-        "laravel/slack-notification-channel": "^2.4",
+        "laravel-notification-channels/webhook": "^2.4",
+        "laravel/slack-notification-channel": "^2.5",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.0|^8.0",
