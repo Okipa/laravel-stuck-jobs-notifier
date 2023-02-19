@@ -60,11 +60,6 @@ class JobsAreStuck extends Notification
                 . '"php artisan queue:failed" command.'));
     }
 
-    /**
-     * Get the slack representation of the notification.
-     *
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
     public function toSlack(): SlackMessage
     {
         return (new SlackMessage())->error()->content('⚠ '
